@@ -5,14 +5,18 @@
 
 A powerful Unity Editor plugin that integrates the **ElevenLabs Text-to-Speech API** directly into your workflow. Generate high-quality AI voiceovers, manage voice lines in modular steps, and streamline your comprehensive audio pipeline without leaving Unity.
 
-## 🌟 Features
+## 🗺️ Roadmap & Features
 
-*   **Editor Integration**: Native Unity Editor Window for seamless interaction.
-*   **Voice Modules**: Organize your voice lines into Modules and Steps for better project management.
-*   **Text-to-Speech Generation**: Generate audio clips directly from text using your favorite ElevenLabs voices.
-*   **Voice History**: View and load previously generated audio from your ElevenLabs history.
-*   **Audio Preview**: Built-in audio player to preview generated clips before saving.
-*   **Batch Processing**: Generate multiple voice steps at once.
+- [x] **Editor Integration**: Native Unity Editor Window for seamless interaction.
+- [x] **Voice Modules**: Organize your voice lines into Modules and Steps for better project management.
+- [x] **Text-to-Speech Generation**: Generate audio clips directly from text using your favorite ElevenLabs voices.
+- [x] **Voice History**: View and load previously generated audio from your ElevenLabs history.
+- [x] **Audio Preview**: Built-in audio player to preview generated clips before saving.
+- [x] **Batch Processing**: Generate multiple voice steps at once.
+- [x] **ZIP Export**: Export generated audio files as a ZIP archive for easy sharing.
+- [ ] **Runtime API**: Generate voiceovers at runtime in builds (Coming Soon).
+- [ ] **Speech-to-Speech**: Transform audio input using ElevenLabs models.
+- [ ] **Localization**: Multi-language support for voice generation.
 
 ## 📦 Installation
 
