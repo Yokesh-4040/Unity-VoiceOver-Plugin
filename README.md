@@ -12,16 +12,26 @@ A powerful Unity Editor plugin that integrates the **ElevenLabs Text-to-Speech A
 
 ## 🗺️ Roadmap & Features
 
-- [x] **Editor Integration**: Native Unity Editor Window for seamless interaction.
-- [x] **Voice Modules**: Organize your voice lines into Modules and Steps for better project management.
-- [x] **Text-to-Speech Generation**: Generate audio clips directly from text using your favorite ElevenLabs voices.
-- [x] **Voice History**: View and load previously generated audio from your ElevenLabs history.
-- [x] **Audio Preview**: Built-in audio player to preview generated clips before saving.
-- [x] **Batch Processing**: Generate multiple voice steps at once.
-- [x] **ZIP Export**: Export generated audio files as a ZIP archive for easy sharing.
-- [ ] **Runtime API**: Generate voiceovers at runtime in builds (Coming Soon).
-- [ ] **Speech-to-Speech**: Transform audio input using ElevenLabs models.
-- [ ] **Localization**: Multi-language support for voice generation.
+## 🗺️ Roadmap & Features
+
+We plan to bring the full power of ElevenLabs to Unity. Below is the roadmap of features we are implementing.
+
+| Feature | Description | Status | Priority |
+| :--- | :--- | :--- | :--- |
+| **Text-to-Speech (TTS)** | Generate lifelike speech from text using standard models. | ✅ **Implemented** | - |
+| **Voice Selection** | Browse and select voices from your ElevenLabs library. | ✅ **Implemented** | - |
+| **Batch Generation** | Generate audio for multiple lines/steps at once. | ✅ **Implemented** | - |
+| **Voice History** | View and retrieve past generations. | ✅ **Implemented** | - |
+| **ZIP Export** | Export generated audio as a ZIP archive. | ✅ **Implemented** | - |
+| **Speech-to-Speech** | Transform input audio into a different voice (e.g., creature voices). | 🚧 **Planned** | High |
+| **Sound Effects (SFX)** | Generate sound effects from text descriptions. | 🚧 **Planned** | High |
+| **Runtime API** | Generate voiceovers dynamically in a built game (at runtime). | 🚧 **Planned** | High |
+| **Voice Design** | Create new custom voices directly within the Editor. | ⏳ **Backlog** | Medium |
+| **Dubbing / Localization** | Auto-translate and dub voice lines into multiple languages. | ⏳ **Backlog** | Medium |
+| **Pronunciation Dictionaries** | Custom rules for character names and lore terms. | ⏳ **Backlog** | Low |
+| **Timeline Integration** | Native integration with Unity's Timeline for cutscenes. | ⏳ **Backlog** | Low |
+
+> **Legend**: ✅ Implemented | 🚧 Planned (Next Up) | ⏳ Backlog (Later)
 
 ## 📦 Installation
 
