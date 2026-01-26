@@ -1,0 +1,21 @@
+Scene No.,Scene Title / Description,Voice-Over (VO),
+1,Introduction Scene,"“Welcome to the virtual experiment on the Effect of Milling Time and Speed on Particle Size using a Ball Mill. In this exercise, you’ll observe how changes in milling parameters influence particle size reduction.”",
+2,Learning Objective Screen,"“In this experiment, you will vary milling speed and duration to study how these parameters influence particle size.”
+
+
+",
+3,Apparatus ,"1. Ball Mill Machine - 2Kg
+2. Stage Micrometer
+3. Stainless Steel Balls
+4.",
+4,Overview of Ball Mill Setup,"“The ball mill works by rotating around its axis, causing impact and attrition between the balls and the powder particles.”",
+4,Parameter Selection,“Select the desired milling speed and duration. You may re-run the experiment with new settings later for comparison.”,
+5,Loading of Sample,"“Now, the powder and stainless-steel balls are loaded into the mill. A 10:1 ratio ensures efficient impact energy transfer.”",
+6,Start Milling Simulation,Press the start button to begin the rotation,
+7,Time Progress Visualization,"“Notice how prolonged milling results in finer, more homogeneous powder. Excessive milling, however, can generate heat and cause agglomeration.”",
+8,Sampling Step,"“Now, collect a small sample to measure particle size under a virtual microscope.”",
+9,Microscopic Measurement Scene,“Use the stage micrometer to measure particle diameters. Record data for analysis.”,
+10,Data Recording Interface,“The system automatically records 50 particle measurements and calculates the mean and standard deviation.”,
+11,Re-run Experiment with New Parameters,“You can now perform the experiment again using a different milling speed or duration. This will help you compare how varying these parameters affects particle size reduction.”,
+12,Result Visualization – Graph Plot,"“Here, you can visualize how increasing milling time and speed leads to progressive size reduction. Compare your results by re-running the experiment.”",
+13,Interpretation and Conclusion,“You’ve successfully completed the simulation. Milling parameters directly influence the extent of size reduction. Optimizing these ensures consistent product quality in pharmaceutical formulations.”,

@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 472c6f16242d249ed889c6e42ac91809, type: 3}
+  m_Name: SPRS
+  m_EditorClassIdentifier: 
+  defaultVoiceId: wlmwDR77ptH6bKHZui0l
+  defaultVoiceSettings:
+    stability: 0.5
+    similarity_boost: 0.75
+    style: 0
+    use_speaker_boost: 1
+  steps:
+  - title: 'Walkthrough Mode: Understanding Cost and Efficiency in SPRS'
+    voText: In this walkthrough mode, you will be guided step by step through the
+      calculations used to determine handling time, handling cost, and storage cost
+      in a Single Pallet Racking System. These calculations form the baseline for
+      understanding warehouse efficiency and will later be used in the experiment
+      mode.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 8300000, guid: 370d873917ecf4a02bc8705bcad6f16b, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 1/27/2026 1:14:47 AM
+  - title: Base Cost Components of a Warehouse Using SPRS
+    voText: The base cost of a warehouse using Single Pallet Racking System is the
+      total cost incurred to store and handle pallets under normal operating conditions.
+      This base cost is composed of rack cost, floor space cost, and handling cost.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 8300000, guid: 14ca64bf52cba4f0fb994b047e196221, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 1/26/2026 7:31:07 PM
+  - title: Understanding Floor Space Cost
+    voText: Floor space cost refers to the cost associated with the physical area
+      occupied by the warehouse. In SPRS, aisle width and rack layout are fixed,
+      and therefore the floor space cost remains constant throughout this experiment.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 8300000, guid: 6681816dff1d94872b450292e961e8de, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 1/26/2026 7:31:12 PM
+  - title: Handling Cost in SPRS
+    voText: Handling cost is the cost incurred while moving pallets inside the warehouse.
+      It includes the cost of labor, equipment operation, energy consumption, and
+      maintenance. In SPRS, handling cost is the most significant variable cost and
+      the key factor influencing overall efficiency.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 8300000, guid: 665b1d26468404a659b65f889781ffb5, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 1/26/2026 7:31:16 PM
+  - title: Handling Time Breakdown for a Single Task
+    voText: The handling time for a single task is the total time required to locate,
+      move, lift, and place a pallet. In engineering terms, handling time is composed
+      of search time, movement time, and lift time.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 8300000, guid: 1e684295d30f742ba8a06bf7231e6ea2, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 1/26/2026 7:31:21 PM
+  - title: Effect of Storage Strategy on Search and Movement Time
+    voText: In a fixed storage strategy, each SKU has a predefined location. This
+      reduces search time because the operator knows exactly where the pallet is
+      stored. However, movement time may increase because space cannot be dynamically
+      optimized. In a float storage strategy, pallets are stored in any available
+      location. This reduces movement time by minimizing travel distance but increases
+      search time, as the operator must identify the pallet location before retrieval.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 8300000, guid: 75c35760e05e14dec87529b9ea4df281, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 1/26/2026 7:31:28 PM
+  - title: Understanding Number of Tasks
+    voText: The number of tasks represents the total number of pallet handling operations
+      performed within a defined time period. Each task may involve storing a pallet,
+      retrieving a pallet, or repositioning a pallet inside the warehouse.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 8300000, guid: 56b9696b844e04f01a7138f941747a73, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 1/26/2026 7:31:33 PM
+  - title: From Handling Time to Handling Cost
+    voText: Handling cost is calculated by multiplying the total handling time by
+      the cost of operating labor and equipment per unit time.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 8300000, guid: d446518efe88a4e3c8166c72506c75de, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 1/26/2026 7:31:36 PM
+  - title: Storage Cost per Pallet in SPRS
+    voText: The storage cost per pallet represents how much it costs to store and
+      handle a single pallet in the warehouse. This value is used to compare efficiency
+      across different operational choices.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 8300000, guid: ad0d6ed3af21141989fa144110992440, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 1/26/2026 7:31:39 PM
+  - title: Applying the Knowledge in Experiment Mode
+    voText: You have now understood how handling time, number of tasks, and storage
+      strategy influence handling cost and overall efficiency in a Single Pallet
+      Racking System. In the experiment mode, you will apply this knowledge by adjusting
+      operational parameters to achieve the target efficiency.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 8300000, guid: aa99c1ad9df4e48098f7d24f972e480b, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 1/26/2026 7:31:44 PM

@@ -1,0 +1,18 @@
+{
+    "name": "ElevenLabs.Editor",
+    "rootNamespace": "FF.ElevenLabs.Editor",
+    "references": [
+        "ElevenLabs.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
