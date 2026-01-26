@@ -3,6 +3,11 @@
 ![ElevenLabs Unity Plugin](https://img.shields.io/badge/Unity-2021.3%2B-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
+> [!TIP]
+> **Powered by ElevenLabs**
+> This plugin uses the industry-leading **ElevenLabs API** for lifelike speech synthesis.
+> [**Create your free account here**](https://elevenlabs.io/?from=partner) to get your API key and start generating voices!
+
 A powerful Unity Editor plugin that integrates the **ElevenLabs Text-to-Speech API** directly into your workflow. Generate high-quality AI voiceovers, manage voice lines in modular steps, and streamline your comprehensive audio pipeline without leaving Unity.
 
 ## 🗺️ Roadmap & Features
