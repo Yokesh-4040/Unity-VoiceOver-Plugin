@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
@@ -1133,24 +1134,58 @@ namespace FF.ElevenLabs.Editor
         }
         #endregion
         
-        private async void ExportAllAudio(VoiceModule module)
+        private void ExportAllAudio(VoiceModule module)
         {
-             string exportPath = EditorUtility.OpenFolderPanel("Select Export Folder", "", "");
-             if (string.IsNullOrEmpty(exportPath)) return;
+             // 1. Get Save Path
+             string defaultName = $"{module.name}_Voices.zip";
+             string savePath = EditorUtility.SaveFilePanel("Export Voices to ZIP", "", defaultName, "zip");
              
-             int successCount = 0;
-             foreach(var step in module.steps.Where(s => s.generatedAudio != null))
+             if (string.IsNullOrEmpty(savePath)) return;
+             
+             // 2. Collect Files
+             var validSteps = module.steps.Where(s => s.generatedAudio != null).ToList();
+             if (validSteps.Count == 0)
              {
-                 string assetPath = AssetDatabase.GetAssetPath(step.generatedAudio);
-                 if (string.IsNullOrEmpty(assetPath)) continue;
-                 
-                 string fileName = System.IO.Path.GetFileName(assetPath);
-                 System.IO.File.Copy(assetPath, System.IO.Path.Combine(exportPath, fileName), true);
-                 successCount++;
+                 EditorUtility.DisplayDialog("Export Failed", "No generated audio files found in this module.", "OK");
+                 return;
              }
-             
-             EditorUtility.DisplayDialog("Export Complete", $"Exported {successCount} files.", "OK");
-             System.Diagnostics.Process.Start(exportPath);
+
+             // 3. Create ZIP
+             try 
+             {
+                 // Delete if exists (SaveFilePanel usually handles overwrite confirmation, but good to be safe)
+                 if (System.IO.File.Exists(savePath)) System.IO.File.Delete(savePath);
+
+                 using (var archive = ZipFile.Open(savePath, ZipArchiveMode.Create))
+                 {
+                     int successCount = 0;
+                     foreach(var step in validSteps)
+                     {
+                         string assetPath = AssetDatabase.GetAssetPath(step.generatedAudio);
+                         if (string.IsNullOrEmpty(assetPath)) continue;
+                         
+                         // We pull the raw disk path to bypass Unity's internal asset handling if needed, 
+                         // but standard File.Copy works fine with relative asset paths in Editor.
+                         // However, for ZipFile.CreateEntryFromFile, we generally want full system paths 
+                         // or valid relative paths.
+                         
+                         // Get filename
+                         string fileName = System.IO.Path.GetFileName(assetPath);
+                         
+                         // Add Key-Value entry: [SourceFile, EntryName]
+                         archive.CreateEntryFromFile(assetPath, fileName);
+                         successCount++;
+                     }
+                     
+                     EditorUtility.DisplayDialog("Export Complete", $"Successfully zipped {successCount} files to:\n{savePath}", "OK");
+                     EditorUtility.RevealInFinder(savePath);
+                 }
+             }
+             catch (System.Exception e)
+             {
+                 Debug.LogError($"[ElevenLabs] Export failed: {e.Message}");
+                 EditorUtility.DisplayDialog("Export Error", $"Failed to create ZIP file:\n{e.Message}", "OK");
+             }
         }
     }
 
