@@ -48,7 +48,7 @@ namespace FF.ElevenLabs.Editor
         private string historyPermissionStatus = "Not Checked";
         private string verificationError = "";
 
-        [MenuItem("Window/Voice Over")]
+        [MenuItem("Window/Voice Over %&v")]
         public static void ShowWindow()
         {
             GetWindow<ElevenLabsEditorWindow>("Voice Generator");

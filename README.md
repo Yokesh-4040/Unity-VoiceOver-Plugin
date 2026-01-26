@@ -27,7 +27,7 @@ A powerful Unity Editor plugin that integrates the **ElevenLabs Text-to-Speech A
 ## 🚀 Usage
 
 1.  **Open the Window**:
-    *   Go to `Window > Voice Over` in the Unity Editor menu.
+    *   Go to `Window > Voice Over` in the Unity Editor menu (or press `Cmd+Opt+V` / `Ctrl+Alt+V`).
 2.  **Authentication**:
     *   Enter your ElevenLabs API Key (found in your [ElevenLabs Profile](https://elevenlabs.io/)).
     *   The key is stored securely in your local EditorPrefs.
