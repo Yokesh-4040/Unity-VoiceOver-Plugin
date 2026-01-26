@@ -12,8 +12,6 @@ A powerful Unity Editor plugin that integrates the **ElevenLabs Text-to-Speech A
 
 ## 🗺️ Roadmap & Features
 
-## 🗺️ Roadmap & Features
-
 We plan to bring the full power of ElevenLabs to Unity. Below is the roadmap of features we are implementing.
 
 | Feature | Description | Status | Priority |
