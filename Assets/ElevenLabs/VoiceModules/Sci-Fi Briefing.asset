@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 472c6f16242d249ed889c6e42ac91809, type: 3}
+  m_Name: Sci-Fi Briefing
+  m_EditorClassIdentifier: 
+  defaultVoiceId: TxGEqnHWrfWFTfGW9XjX
+  defaultVoiceSettings:
+    stability: 0.5
+    similarity_boost: 0.75
+    style: 0
+    use_speaker_boost: 1
+  steps:
+  - title: 'System initializatio...'
+    voText: System initialization complete. All diagnostics green.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 0}
+    isDirty: 1
+    lastGeneratedTime: 
+  - title: 'Commander, we have d...'
+    voText: Commander, we have detected a distress signal from the outer rim.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 0}
+    isDirty: 1
+    lastGeneratedTime: 
+  - title: 'Engaging warp drive ...'
+    voText: Engaging warp drive in T-minus ten seconds.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 0}
+    isDirty: 1
+    lastGeneratedTime: 
+  - title: 'Shields are holding ...'
+    voText: Shields are holding at 80 percent magnitude.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 0}
+    isDirty: 1
+    lastGeneratedTime: 
+  - title: 'Data upload confirme...'
+    voText: Data upload confirmed. Welcome to the Galactic Federation.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 0}
+    isDirty: 1
+    lastGeneratedTime:

@@ -201,8 +201,13 @@ namespace FF.ElevenLabs
                      string tempPath = System.IO.Path.Combine(Application.temporaryCachePath, $"history_{historyItemId}.mp3");
                      System.IO.File.WriteAllBytes(tempPath, audioData);
                      
-                     using (UnityWebRequest audioReq = UnityWebRequestMultimedia.GetAudioClip("file://" + tempPath, AudioType.MPEG))
+                     string fileUrl = "file://" + tempPath;
+                     using (UnityWebRequest audioReq = UnityWebRequest.Get(fileUrl))
                      {
+                         var dh = new DownloadHandlerAudioClip(fileUrl, AudioType.MPEG);
+                         dh.streamAudio = false; // Force full load for waveform visualization
+                         audioReq.downloadHandler = dh;
+
                          var audioOp = audioReq.SendWebRequest();
                          while (!audioOp.isDone) await Task.Yield();
 
@@ -217,6 +222,33 @@ namespace FF.ElevenLabs
                     Debug.LogError($"Failed to fetch history audio: {request.error}");
                 }
                 return null;
+            }
+        }
+        public static async Task<byte[]> GetHistoryAudioBytesAsync(string historyItemId)
+        {
+            string url = $"{BASE_URL}/history/{historyItemId}/audio";
+            string apiKey = ElevenLabsUtilities.GetAPIKey();
+
+            if (string.IsNullOrEmpty(apiKey)) return null;
+            
+            using (UnityWebRequest request = UnityWebRequest.Get(url))
+            {
+                request.SetRequestHeader("xi-api-key", apiKey);
+                request.SetRequestHeader("Accept", "audio/mpeg");
+                request.downloadHandler = new DownloadHandlerBuffer();
+
+                var operation = request.SendWebRequest();
+                while (!operation.isDone) await Task.Yield();
+
+                if (request.result == UnityWebRequest.Result.Success)
+                {
+                     return request.downloadHandler.data;
+                }
+                else
+                {
+                    Debug.LogError($"Failed to fetch history audio bytes: {request.error}");
+                    return null;
+                }
             }
         }
     }

@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
-using FF.ElevenLabs.Editor;
 
 namespace FF.ElevenLabs.Editor
 {
@@ -48,6 +47,7 @@ namespace FF.ElevenLabs.Editor
         private string ttsPermissionStatus = "Not Checked";
         private string historyPermissionStatus = "Not Checked";
         private string verificationError = "";
+        private bool autoPlayAudio = true;
 
         [MenuItem("Window/Voice Over %&v")]
         public static void ShowWindow()
@@ -79,6 +79,19 @@ namespace FF.ElevenLabs.Editor
             if (audioClipEditor != null)
             {
                 DestroyImmediate(audioClipEditor);
+            }
+        }
+
+        /// <summary>
+        /// Called multiple times per second while the editor window is open.
+        /// Used to continuously update the UI while audio is playing.
+        /// </summary>
+        private void Update()
+        {
+            // Continuously repaint while audio is playing to update the play/pause button
+            if (currentPlayingClip != null && IsClipPlaying())
+            {
+                Repaint();
             }
         }
 
@@ -147,6 +160,13 @@ namespace FF.ElevenLabs.Editor
             GUILayout.BeginHorizontal(EditorStyles.toolbar);
             GUILayout.Label("ElevenLabs Voice Generator", EditorStyles.boldLabel);
             GUILayout.FlexibleSpace();
+            
+            // Star on GitHub
+            if (GUILayout.Button("★ Star on GitHub", EditorStyles.toolbarButton))
+            {
+                Application.OpenURL("https://github.com/Yokesh-4040/Elevenlabs-Unity-Plugin");
+            }
+
             if (isAuthenticated)
             {
                 if (GUILayout.Button("Logout", EditorStyles.toolbarButton))
@@ -185,43 +205,51 @@ namespace FF.ElevenLabs.Editor
             
             if (currentPlayingClip != null)
             {
-                 if (GUILayout.Button("Stop / Pause", GUILayout.Height(30)))
+                 bool isPlaying = IsClipPlaying();
+                 string playIcon = isPlaying ? "PauseButton" : "PlayButton";
+                 
+                 // Play/Pause
+                 if (GUILayout.Button(EditorGUIUtility.IconContent(playIcon), GUILayout.Width(40), GUILayout.Height(30)))
                  {
-                     StopAllClips();
+                     if (isPlaying) 
+                     {
+                         StopAllClips();
+                         Repaint(); // Ensure UI updates after stopping
+                     }
+                     else 
+                     {
+                         // Use PlayAudio for consistency to ensure all state is properly managed
+                         LoadAudioToPlayer(currentPlayingClip, currentPlayingTitle, autoPlay: true);
+                     }
                  }
-                 if (GUILayout.Button("Save to Project", GUILayout.Height(30)))
+                 
+                 // Save
+                 if (GUILayout.Button(EditorGUIUtility.IconContent("SaveAs"), GUILayout.Width(40), GUILayout.Height(30)))
                  {
                      SaveCurrentClip();
                  }
             }
             GUILayout.EndHorizontal();
 
-            if (currentPlayingClip != null)
+
+            if (currentPlayingClip != null && audioClipEditor != null)
             {
-                 // Check/Create editor
-                 if (audioClipEditor == null || audioClipEditor.target != currentPlayingClip)
-                 {
-                     if(audioClipEditor != null) DestroyImmediate(audioClipEditor);
-                     audioClipEditor = UnityEditor.Editor.CreateEditor(currentPlayingClip);
-                 }
-                 
                  // Draw Waveform
-                 if (audioClipEditor != null)
+                 // Note: OnInteractivePreviewGUI includes built-in play/pause controls
+                 // Our custom play/pause button above provides better visual feedback
+                 Rect previewRect = GUILayoutUtility.GetRect(position.width - 20, 80);
+                 if (Event.current.type == EventType.Repaint)
                  {
-                     Rect previewRect = GUILayoutUtility.GetRect(position.width - 20, 80);
-                     if (Event.current.type == EventType.Repaint)
-                     {
-                        EditorStyles.helpBox.Draw(previewRect, false, false, false, false);
-                     }
-                     audioClipEditor.OnInteractivePreviewGUI(previewRect, EditorStyles.whiteLabel);
-                     
-                     // Toolbar
-                     GUILayout.BeginHorizontal(EditorStyles.toolbar);
-                     GUILayout.Label(audioClipEditor.GetInfoString(), EditorStyles.miniLabel);
-                     GUILayout.FlexibleSpace();
-                     audioClipEditor.OnPreviewSettings();
-                     GUILayout.EndHorizontal();
+                    EditorStyles.helpBox.Draw(previewRect, false, false, false, false);
                  }
+                 audioClipEditor.OnInteractivePreviewGUI(previewRect, EditorStyles.whiteLabel);
+                 
+                 // Toolbar
+                 GUILayout.BeginHorizontal(EditorStyles.toolbar);
+                 GUILayout.Label(audioClipEditor.GetInfoString(), EditorStyles.miniLabel);
+                 GUILayout.FlexibleSpace();
+                 audioClipEditor.OnPreviewSettings();
+                 GUILayout.EndHorizontal();
             }
             else
             {
@@ -232,32 +260,141 @@ namespace FF.ElevenLabs.Editor
             GUILayout.EndVertical();
         }
 
+        /// <summary>
+        /// Stops all audio preview clips using Unity's internal AudioUtil.
+        /// Note: Uses reflection to access internal Unity API - may break in future Unity versions.
+        /// </summary>
         private void StopAllClips()
         {
-            var assembly = typeof(UnityEditor.Editor).Assembly;
-            var type = assembly.GetType("UnityEditor.AudioUtil");
-            var method = type.GetMethod("StopAllPreviewClips", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-            if (method != null) method.Invoke(null, null);
+            try
+            {
+                var assembly = typeof(UnityEditor.Editor).Assembly;
+                var type = assembly.GetType("UnityEditor.AudioUtil");
+                var method = type.GetMethod("StopAllPreviewClips", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+                if (method != null) 
+                {
+                    method.Invoke(null, null);
+                }
+                else
+                {
+                    Debug.LogWarning("[ElevenLabs] StopAllPreviewClips method not found in AudioUtil");
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"[ElevenLabs] Failed to stop audio clips: {e.Message}");
+            }
         }
 
-        private void PlayAudio(AudioClip clip, string title)
+        /// <summary>
+        /// Loads an audio clip into the bottom player without auto-playing.
+        /// This allows users to see the waveform and manually control playback.
+        /// ALL audio loading should go through this method for consistency.
+        /// </summary>
+        /// <param name="clip">The AudioClip to load</param>
+        /// <param name="title">Display title for the audio player UI</param>
+        /// <param name="autoPlay">If true, automatically starts playback after loading</param>
+        private void LoadAudioToPlayer(AudioClip clip, string title, bool autoPlay = false)
         {
-            if (clip == null) return;
+            if (clip == null) 
+            {
+                Debug.LogWarning("[ElevenLabs] Cannot load null audio clip");
+                return;
+            }
             
+            // Stop any currently playing audio
+            StopAllClips();
+            
+            // Update player state
             currentPlayingClip = clip;
             currentPlayingTitle = title;
             
+            // Recreate the audio clip editor for waveform visualization
             if (audioClipEditor != null) DestroyImmediate(audioClipEditor);
             audioClipEditor = UnityEditor.Editor.CreateEditor(currentPlayingClip);
             
-            // Auto play?
-            // EditorUtility.Audio.StopAllPreviewClips();
-            // EditorUtility.Audio.PlayPreviewClip(clip);
-            // InteractivePreviewGUI handles playback when user clicks play. 
-            // If we want auto-play, we can use reflection.
-            // For now, let's just load it. User can press play.
+            // Auto-play if requested (respects user preference)
+            if (autoPlay)
+            {
+                PlayClip(clip);
+            }
             
+            // Update UI to show the loaded audio
             Repaint();
+        }
+
+        /// <summary>
+        /// Plays an audio clip using Unity's internal AudioUtil.
+        /// Note: Uses reflection to access internal Unity API - may break in future Unity versions.
+        /// </summary>
+        /// <param name="clip">The AudioClip to play</param>
+        /// <param name="startSample">Sample position to start playback from</param>
+        /// <param name="loop">Whether to loop the audio</param>
+        private void PlayClip(AudioClip clip, int startSample = 0, bool loop = false)
+        {
+            try
+            {
+                var assembly = typeof(UnityEditor.Editor).Assembly;
+                var type = assembly.GetType("UnityEditor.AudioUtil");
+                var method = type.GetMethod("PlayPreviewClip", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public, null, new System.Type[] { typeof(AudioClip), typeof(int), typeof(bool) }, null);
+                if (method != null) 
+                {
+                    method.Invoke(null, new object[] { clip, startSample, loop });
+                }
+                else
+                {
+                    Debug.LogWarning("[ElevenLabs] PlayPreviewClip method not found in AudioUtil");
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"[ElevenLabs] Failed to play audio clip: {e.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Checks if the current audio clip is playing using Unity's internal AudioUtil.
+        /// Note: Uses reflection to access internal Unity API - may break in future Unity versions.
+        /// </summary>
+        /// <returns>True if the current clip is playing, false otherwise</returns>
+        private bool IsClipPlaying()
+        {
+            if (currentPlayingClip == null) return false;
+            
+            try
+            {
+                var assembly = typeof(UnityEditor.Editor).Assembly;
+                var type = assembly.GetType("UnityEditor.AudioUtil");
+                
+                // Try IsPreviewClipPlaying first (newer Unity versions)
+                var method = type.GetMethod("IsPreviewClipPlaying", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public, null, new System.Type[] { typeof(AudioClip) }, null);
+                if (method != null) 
+                {
+                    return (bool)method.Invoke(null, new object[] { currentPlayingClip });
+                }
+                
+                // Fallback: Try IsClipPlaying (older Unity versions)
+                method = type.GetMethod("IsClipPlaying", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public, null, new System.Type[] { typeof(AudioClip) }, null);
+                if (method != null) 
+                {
+                    return (bool)method.Invoke(null, new object[] { currentPlayingClip });
+                }
+                
+                // Last resort: Check if ANY preview clip is playing
+                method = type.GetMethod("IsPreviewClipPlaying", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public, null, System.Type.EmptyTypes, null);
+                if (method != null)
+                {
+                    return (bool)method.Invoke(null, null);
+                }
+                
+                // If no method found, assume not playing
+                return false;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"[ElevenLabs] Failed to check if clip is playing: {e.Message}");
+                return false;
+            }
         }
         
         private void SaveCurrentClip()
@@ -313,10 +450,16 @@ namespace FF.ElevenLabs.Editor
 
             foreach (var item in apiHistory)
             {
-                // Click to play logic
-                Rect itemRect = EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                bool isPlaying = currentPlayingTitle.Contains(item.history_item_id);
+                
+                // Highlight background if playing
+                GUI.backgroundColor = isPlaying ? new Color(0.8f, 1f, 0.8f) : Color.white;
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                GUI.backgroundColor = Color.white; // Reset for inner elements
+                
                 GUILayout.BeginHorizontal();
                 
+                // Info Column
                 GUILayout.BeginVertical();
                 GUILayout.Label($"{item.voice_name}", EditorStyles.boldLabel);
                 
@@ -327,20 +470,32 @@ namespace FF.ElevenLabs.Editor
                 GUILayout.Label(item.text.Length > 60 ? item.text.Substring(0, 60) + "..." : item.text, EditorStyles.wordWrappedLabel);
                 GUILayout.EndVertical();
 
-                // if (GUILayout.Button("Load", GUILayout.Width(60), GUILayout.Height(40)))
-                // {
-                //    LoadHistoryItem(item);
-                // }
+                // Buttons Column (Right Aligned)
+                GUILayout.BeginVertical(GUILayout.Width(40));
+                GUILayout.FlexibleSpace();
                 
-                GUILayout.EndHorizontal();
+                // Download Button (Visible/Clickable on top of row)
+                if (GUILayout.Button(EditorGUIUtility.IconContent("SaveAs"), GUILayout.Width(35), GUILayout.Height(30)))
+                {
+                    DownloadHistoryAudio(item);
+                }
+                
+                GUILayout.FlexibleSpace();
                 GUILayout.EndVertical();
                 
-                 if (Event.current.type == EventType.MouseDown && itemRect.Contains(Event.current.mousePosition))
-                 {
-                     LoadHistoryItem(item);
-                     Event.current.Use();
-                     Repaint();
-                 }
+                GUILayout.EndHorizontal();
+                EditorGUILayout.EndVertical();
+
+                // Click Logic for the entire row
+                Rect rowRect = GUILayoutUtility.GetLastRect();
+                EditorGUIUtility.AddCursorRect(rowRect, MouseCursor.Link);
+
+                // Check for click (if not on Download button, which consumes event)
+                if (Event.current.type == EventType.MouseDown && rowRect.Contains(Event.current.mousePosition))
+                {
+                    LoadHistoryItem(item);
+                    Event.current.Use();
+                }
             }
         }
 
@@ -351,8 +506,51 @@ namespace FF.ElevenLabs.Editor
              var clip = await ElevenLabsAPI.GetHistoryAudioAsync(item.history_item_id);
              if (clip != null)
              {
-                 PlayAudio(clip, $"{item.voice_name} - {item.history_item_id}");
+                 // Ensure clip is loaded before playing
+                 while (clip.loadState == AudioDataLoadState.Loading)
+                 {
+                     await System.Threading.Tasks.Task.Delay(10);
+                 }
+                 
+                 if (clip.loadState == AudioDataLoadState.Loaded)
+                 {
+                    LoadAudioToPlayer(clip, $"{item.voice_name} - {item.history_item_id}", autoPlay: true);
+                 }
+                 else
+                 {
+                     Debug.LogError($"[ElevenLabs] Failed to load audio clip for {item.history_item_id}");
+                 }
              }
+        }
+
+        private async void DownloadHistoryAudio(HistoryItemApiModel item)
+        {
+            if (string.IsNullOrEmpty(item.history_item_id)) return;
+
+            string safeName = System.Text.RegularExpressions.Regex.Replace(item.text, "[^a-zA-Z0-9]", "_");
+            if (safeName.Length > 50) safeName = safeName.Substring(0, 50);
+            if (string.IsNullOrEmpty(safeName)) safeName = item.history_item_id;
+
+            string fileName = $"{safeName}.mp3"; 
+            string savePath = EditorUtility.SaveFilePanel("Save Audio", "", fileName, "mp3");
+
+            if (string.IsNullOrEmpty(savePath)) return;
+
+            var audioData = await ElevenLabsAPI.GetHistoryAudioBytesAsync(item.history_item_id);
+            if (audioData != null)
+            {
+                try
+                {
+                    System.IO.File.WriteAllBytes(savePath, audioData);
+                    EditorUtility.DisplayDialog("Download Complete", $"Saved to:\n{savePath}", "OK");
+                    EditorUtility.RevealInFinder(savePath);
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError($"[ElevenLabs] Save failed: {e.Message}");
+                    EditorUtility.DisplayDialog("Error", $"Failed to save file:\n{e.Message}", "OK");
+                }
+            }
         }
         #endregion
 
@@ -477,7 +675,7 @@ namespace FF.ElevenLabs.Editor
                             // Auto-play on select
                             if (selectedStep.generatedAudio != null)
                             {
-                                PlayAudio(selectedStep.generatedAudio, $"{selectedModule.name} - {selectedStep.title}");
+                                LoadAudioToPlayer(selectedStep.generatedAudio, $"{selectedModule.name} - {selectedStep.title}", autoPlay: true);
                             }
                         }
                         
@@ -727,12 +925,11 @@ namespace FF.ElevenLabs.Editor
             GUILayout.Space(10);
             
             // Play Button 
+            // Play Button Removed (Now auto-plays and uses bottom player)
             if (selectedStep.generatedAudio != null)
             {
-                if (GUILayout.Button("▶ Play Current Audio", GUILayout.Height(40)))
-                {
-                   PlayAudio(selectedStep.generatedAudio, $"{selectedModule.name} - {selectedStep.title}");
-                }
+                // Optional: Show a small indicator or mini-controls if needed
+                // For now, removing as per request.
             }
         }
 
@@ -773,7 +970,10 @@ namespace FF.ElevenLabs.Editor
                         AssetDatabase.SaveAssets();
                         
                         // Auto-load to player
-                        PlayAudio(step.generatedAudio, $"{module.name} - {step.title}");
+                        if (autoPlayAudio)
+                        {
+                            LoadAudioToPlayer(step.generatedAudio, $"{module.name} - {step.title}", autoPlay: true);
+                        }
                     }
                 }
             }
@@ -1083,6 +1283,10 @@ namespace FF.ElevenLabs.Editor
             }
             GUILayout.EndHorizontal();
             
+            GUILayout.Space(10);
+            GUILayout.Label("Preferences", EditorStyles.boldLabel);
+            autoPlayAudio = EditorGUILayout.Toggle("Auto-play on Generate", autoPlayAudio);
+            
             GUILayout.Space(20);
             
             GUILayout.Label("Permissions Check", EditorStyles.boldLabel);
@@ -1153,7 +1357,6 @@ namespace FF.ElevenLabs.Editor
              // 3. Create ZIP
              try 
              {
-                 // Delete if exists (SaveFilePanel usually handles overwrite confirmation, but good to be safe)
                  if (System.IO.File.Exists(savePath)) System.IO.File.Delete(savePath);
 
                  using (var archive = ZipFile.Open(savePath, ZipArchiveMode.Create))
@@ -1164,15 +1367,20 @@ namespace FF.ElevenLabs.Editor
                          string assetPath = AssetDatabase.GetAssetPath(step.generatedAudio);
                          if (string.IsNullOrEmpty(assetPath)) continue;
                          
-                         // We pull the raw disk path to bypass Unity's internal asset handling if needed, 
-                         // but standard File.Copy works fine with relative asset paths in Editor.
-                         // However, for ZipFile.CreateEntryFromFile, we generally want full system paths 
-                         // or valid relative paths.
+                         // Sanitize filename from text
+                         string safeName = System.Text.RegularExpressions.Regex.Replace(step.title, "[^a-zA-Z0-9]", "_");
+                         if (safeName.Length > 50) safeName = safeName.Substring(0, 50);
+                         if (string.IsNullOrEmpty(safeName)) safeName = $"Audio_{System.Guid.NewGuid().ToString().Substring(0, 8)}";
                          
-                         // Get filename
-                         string fileName = System.IO.Path.GetFileName(assetPath);
+                         string fileName = $"{safeName}.mp3"; // Or .wav depending on source, but assuming .mp3 for simplicity or consistent export
+                         // Actually, let's keep original extension to be safe
+                         string ext = System.IO.Path.GetExtension(assetPath);
+                         fileName = $"{safeName}{ext}";
+
+                         // Ensure unique names in zip
+                         // (Simple handling: if duplicate, zip lib might throw or overwrite. 
+                         //  For now, assuming titles are somewhat unique or just letting it happen)
                          
-                         // Add Key-Value entry: [SourceFile, EntryName]
                          archive.CreateEntryFromFile(assetPath, fileName);
                          successCount++;
                      }

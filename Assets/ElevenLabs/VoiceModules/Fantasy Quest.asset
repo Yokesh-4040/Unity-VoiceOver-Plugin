@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 472c6f16242d249ed889c6e42ac91809, type: 3}
+  m_Name: Fantasy Quest
+  m_EditorClassIdentifier: 
+  defaultVoiceId: wlmwDR77ptH6bKHZui0l
+  defaultVoiceSettings:
+    stability: 0.5
+    similarity_boost: 0.75
+    style: 0
+    use_speaker_boost: 1
+  steps:
+  - title: Greetings, brave tra...
+    voText: Greetings, brave traveler. You have journeyed far to reach these lands.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 8300000, guid: 6757e91f0a9884f99b71cf6418744016, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 1/27/2026 4:05:09 PM
+  - title: The prophecy spoke o...
+    voText: The prophecy spoke of one who would wield the Sword of Aethelgard.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 8300000, guid: 0689e22be38654481aa8bdd1816d1ab5, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 1/27/2026 4:05:11 PM
+  - title: Beware the shadows i...
+    voText: Beware the shadows in the valley; they are not what they seem.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 8300000, guid: 5e6d860b0223d4437a3af7a53ec1e07a, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 1/27/2026 4:05:14 PM
+  - title: We must make haste t...
+    voText: We must make haste to the citadel before nightfall.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 8300000, guid: 524b229e364824e7b8b471884fa1e318, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 1/27/2026 4:05:16 PM
+  - title: May the light of the...
+    voText: May the light of the crystals guide your path.
+    assignedVoiceId: 
+    generatedAudio: {fileID: 8300000, guid: 15bea773300dd4fcf96e880df3d40a97, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 1/27/2026 4:05:18 PM

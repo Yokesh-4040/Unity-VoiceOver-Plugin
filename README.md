@@ -59,6 +59,53 @@ We plan to bring the full power of ElevenLabs to Unity. Below is the roadmap of 
     *   Once satisfied, the audio clip is automatically saved to `Assets/ElevenLabs/Generated/[ModuleName]`.
     *   You can now use these `AudioClip` references in your game scripts!
 
+## 🎵 Audio Playback Architecture
+
+The plugin features a robust audio playback system with real-time UI updates and consistent state management across all audio sources.
+
+### Audio Flow
+
+![Audio Playback Flow](/.github/images/final_audio_flow_1769518922058.png)
+
+**Key Components:**
+
+1. **Audio Sources** - Four entry points for audio playback:
+   - History Tab - Load previously generated audio
+   - Voice Modules (Select) - Auto-play when selecting steps
+   - Voice Modules (Generate) - Auto-play after generation
+   - Bottom Player UI - Manual playback controls
+
+2. **Centralized Playback** - All sources route through `LoadAudioToPlayer()`:
+   - Stops current audio
+   - Updates player state
+   - Creates waveform editor
+   - Optionally starts playback
+   - Triggers UI update
+
+3. **Real-time Updates** - `Update()` loop ensures UI reflects playback state:
+   - Continuously checks if audio is playing
+   - Updates play/pause button icon in real-time
+   - No manual refresh needed
+
+4. **Bottom Player UI** - Displays:
+   - Waveform visualization
+   - Play/pause controls
+   - Audio metadata (format, sample rate, length)
+   - Save functionality
+
+### Technical Details
+
+- **Unity AudioUtil Integration**: Uses reflection to access Unity's internal audio preview system
+- **Cross-version Compatibility**: Multi-fallback approach for different Unity versions
+- **Error Handling**: Comprehensive try-catch blocks prevent crashes
+- **Performance**: Minimal overhead with smart repaint logic
+
+For detailed technical documentation, see:
+- [Final Audio Audit](FINAL_AUDIO_AUDIT.md) - Complete flow analysis
+- [Audio Editor Review](AUDIO_EDITOR_REVIEW.md) - Editor utility usage
+- [Audio Playback Fixes](AUDIO_PLAYBACK_FIXES.md) - Implementation details
+
+
 ## 🤝 Contribution
 
 We welcome contributions from the community! Whether it's a bug fix, new feature, or documentation improvement, your help is appreciated.
