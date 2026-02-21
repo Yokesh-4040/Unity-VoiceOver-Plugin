@@ -52,18 +52,15 @@ jobs:
           git push origin HEAD:${{ github.ref }}
 
       - name: Generate File List
-        id: get_files
         run: |
-          echo "files<<EOF" >> $GITHUB_OUTPUT
-          find Assets/Voiceover -name \*.meta >> $GITHUB_OUTPUT
-          echo "Assets/Voiceover.meta" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          find Assets/Voiceover -name \*.meta > metaList
+          echo "Assets/Voiceover.meta" >> metaList
 
       - name: Generate Unity Package File
         uses: pCYSl5EDgo/create-unitypackage@master
         with:
           package-path: VoiceOver-${{ env.NEW_VERSION }}.unitypackage
-          include-files: ${{ steps.get_files.outputs.files }}
+          include-files: metaList
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
