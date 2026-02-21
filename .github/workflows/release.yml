@@ -51,11 +51,19 @@ jobs:
           git commit -m "chore: bump version to ${{ env.NEW_VERSION }} [skip ci]"
           git push origin HEAD:${{ github.ref }}
 
+      - name: Generate File List
+        id: get_files
+        run: |
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          find Assets/ElevenLabs -name \*.meta >> $GITHUB_OUTPUT
+          echo "Assets/ElevenLabs.meta" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Generate Unity Package File
         uses: pCYSl5EDgo/create-unitypackage@master
         with:
           package-path: VoiceOver-${{ env.NEW_VERSION }}.unitypackage
-          include-files: Assets/ElevenLabs
+          include-files: ${{ steps.get_files.outputs.files }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
