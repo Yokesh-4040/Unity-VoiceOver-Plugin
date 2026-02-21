@@ -92,10 +92,6 @@ The plugin features a robust audio playback system with real-time UI updates and
 - **Error Handling**: Comprehensive try-catch blocks prevent crashes.
 - **Performance**: Minimal overhead with smart repaint logic.
 
-For detailed technical documentation, see:
-- [Final Audio Audit](FINAL_AUDIO_AUDIT.md) - Complete flow analysis
-- [Audio Editor Review](AUDIO_EDITOR_REVIEW.md) - Editor utility usage
-
 ## 🤝 Contribution
 
 We welcome contributions from the community! Whether it's a bug fix, new provider integration, or documentation improvement, your help is appreciated.
