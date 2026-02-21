@@ -28,7 +28,7 @@ jobs:
       - name: Increment Version in package.json
         id: version_bump
         run: |
-          cd Assets/ElevenLabs
+          cd Assets/Voiceover
           # Get current version
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           echo "Current Version: $CURRENT_VERSION"
@@ -47,7 +47,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add Assets/ElevenLabs/package.json
+          git add Assets/Voiceover/package.json
           git commit -m "chore: bump version to ${{ env.NEW_VERSION }} [skip ci]"
           git push origin HEAD:${{ github.ref }}
 
@@ -55,8 +55,8 @@ jobs:
         id: get_files
         run: |
           echo "files<<EOF" >> $GITHUB_OUTPUT
-          find Assets/ElevenLabs -name \*.meta >> $GITHUB_OUTPUT
-          echo "Assets/ElevenLabs.meta" >> $GITHUB_OUTPUT
+          find Assets/Voiceover -name \*.meta >> $GITHUB_OUTPUT
+          echo "Assets/Voiceover.meta" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Generate Unity Package File

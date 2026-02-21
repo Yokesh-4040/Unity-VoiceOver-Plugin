@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: FortyForty
-  productName: Elevenlabs Plugin
+  productName: Voiceover Plugin
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -163,7 +163,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Standalone: com.FortyForty.Elevenlabs-Plugin
+    Standalone: com.FortyForty.Voiceover-Plugin
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -775,14 +775,14 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: Elevenlabs Plugin
+  metroPackageName: Voiceover Plugin
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: Elevenlabs Plugin
+  metroApplicationDescription: Voiceover Plugin
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -855,7 +855,7 @@ PlayerSettings:
   cloudProjectId: cac542ac-799e-406b-9bec-1d90f048a4c6
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Elevenlabs Plugin
+  projectName: Voiceover Plugin
   organizationId: fourtyfourty
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

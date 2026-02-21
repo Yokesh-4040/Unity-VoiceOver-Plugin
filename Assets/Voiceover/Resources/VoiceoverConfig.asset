@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a05d2dc62bb1442ab42402f62a35464, type: 3}
+  m_Name: VoiceoverConfig
+  m_EditorClassIdentifier: 
+  activeProvider: 1
+  defaultModelId: eleven_monolingual_v1
+  defaultStability: 0.5
+  defaultSimilarity: 0.75
+  autoSaveAudio: 1
+  saveFolderPath: Assets/Voiceover/GeneratedVoices
+  customVoices:
+  - voice_id: wlmwDR77ptH6bKHZui0l
+    name: Riya
+    category: Custom
+    settings:
+      stability: 0.5
+      similarity_boost: 0.75
+      style: 0
+      use_speaker_boost: 1

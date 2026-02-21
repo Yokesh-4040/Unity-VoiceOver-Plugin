@@ -1,6 +1,6 @@
 # LinkedIn Post Draft
 
-I built an open-source Unity plugin that integrates ElevenLabs AI voice generation directly into the Unity Editor.
+I built an open-source Unity plugin that integrates Voiceover AI voice generation directly into the Unity Editor.
 
 **What it does:**
 - Generate high-quality voiceovers without leaving Unity
@@ -12,6 +12,6 @@ This has been useful for rapid prototyping and creating placeholder voiceovers d
 
 If you work with Unity and need voiceovers, it might save you some time.
 
-GitHub: https://github.com/Yokesh-4040/ElevenLabs-Unity-Plugin
+GitHub: https://github.com/Yokesh-4040/Voiceover-Unity-Plugin
 
-#Unity #GameDev #OpenSource #ElevenLabs
+#Unity #GameDev #OpenSource #Voiceover
