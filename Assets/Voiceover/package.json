@@ -1,6 +1,6 @@
 {
     "name": "com.ff.unity-voiceover-plugin",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "displayName": "Voice Over Studio",
     "description": "A powerful Unity Editor plugin that provides a seamless Voice Over workflow directly within your project. Integrate high-quality AI speech from providers like Voiceover and Sarvam AI.",
     "unity": "2021.3",
