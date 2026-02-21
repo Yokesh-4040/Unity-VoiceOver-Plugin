@@ -47,8 +47,16 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add Assets/Voiceover/package.json
-          git commit -m "chore: bump version to ${{ env.NEW_VERSION }} [skip ci]"
+          
+          # Use sed to replace all standard version matches in our documents
+          sed -Ei "s|releases/download/v[0-9a-zA-Z.-]+/VoiceOver-[0-9a-zA-Z.-]+\.unitypackage|releases/download/v${{ env.NEW_VERSION }}/VoiceOver-${{ env.NEW_VERSION }}.unitypackage|g" README.md docs/index.md
+          sed -Ei "s/Download_v[0-9a-zA-Z.-]+-Unity_Package/Download_v${{ env.NEW_VERSION }}-Unity_Package/g" README.md
+          sed -Ei "s/Download v[0-9a-zA-Z.-]+ Unity Package/Download v${{ env.NEW_VERSION }} Unity Package/g" README.md
+          sed -Ei "s/Download Package \(v[0-9a-zA-Z.-]+\)/Download Package (v${{ env.NEW_VERSION }})/g" docs/index.md
+          sed -Ei "s/Version-[0-9a-zA-Z.-]+-yellowgreen/Version-${{ env.NEW_VERSION }}-yellowgreen/g" README.md
+          
+          git add Assets/Voiceover/package.json README.md docs/index.md
+          git commit -m "chore: bump version to ${{ env.NEW_VERSION }} and update download links [skip ci]"
           git push origin HEAD:${{ github.ref }}
 
       - name: Generate File List

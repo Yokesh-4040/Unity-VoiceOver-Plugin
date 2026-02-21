@@ -118,3 +118,8 @@ InitTestScene*.unity*
 
 # Unity Version Control
 .plastic/
+
+# Documentation
+docs/node_modules/
+docs/.vitepress/dist/
+docs/.vitepress/cache/

@@ -1,7 +1,16 @@
+<div align="center">
+
 # Unity AI Voice Over Plugin
 
-![Unity Support](https://img.shields.io/badge/Unity-2021.3%2B-green.svg)
-![License](https://img.shields.io/badge/License-MIT-blue.svg)
+<img src=".github/images/voice_over-G.gif" alt="Sarvam" />
+
+</div>
+
+![Voice Over Window](.github/images/VoiceOver.png)
+
+![Unity](https://img.shields.io/badge/Unity-2022.3-black?style=plastic&logo=unity)
+![Version](https://img.shields.io/badge/Version-1.0.5-yellowgreen?style=plastic)
+![License](https://img.shields.io/badge/License-MIT-blue.svg?style=plastic)
 
 > [!TIP]
 > **Multi-Provider Support: Voiceover & Sarvam AI**
@@ -27,13 +36,34 @@ We aim to provide a comprehensive voice-over solution for Unity.
 | **Voice History** | View and retrieve past generations. | ✅ **Implemented** | Voiceover |
 | **ZIP Export** | Export generated audio as a ZIP archive. | ✅ **Implemented** | All |
 | **Speech-to-Speech** | Transform input audio into a different voice. | 🚧 **Planned** | Voiceover |
+| **Multilingual Voice Over** | Generate voiceovers in multiple languages of the user's choice. | 🚧 **Planned** | All |
 | **Sound Effects (SFX)** | Generate sound effects from text descriptions. | 🚧 **Planned** | Voiceover |
 | **Runtime API** | Generate voiceovers dynamically in a built game. | 🚧 **Planned** | All |
 | **Timeline Integration** | Native integration with Unity's Timeline for cutscenes. | ⏳ **Backlog** | All |
+| **Lip-Sync (Viseme) Generation** | Auto-generate blendshape data alongside audio for character speaking animations. | ⏳ **Backlog** | All |
+| **Local / Offline TTS** | Support for local models (e.g., Piper, Coqui) for fully offline generation. | ⏳ **Backlog** | Local |
+| **Narrative Tools Integration** | Importers for Yarn Spinner, Ink, and Dialogue System for Unity. | ⏳ **Backlog** | All |
 
 > **Legend**: ✅ Implemented | 🚧 Planned (Next Up) | ⏳ Backlog (Later)
 
-## 📦 Installation
+## 📥 Download
+
+You can download the latest `.unitypackage` directly from our releases:
+
+<a href="https://github.com/Yokesh-4040/Unity-VoiceOver-Plugin/releases/download/v1.0.5/VoiceOver-1.0.5.unitypackage">
+  <img src="https://img.shields.io/badge/Download_v1.0.5-Unity_Package-black?style=for-the-badge&logo=unity" alt="Download v1.0.5 Unity Package" />
+</a>
+
+## 📜 Changelog
+
+**v1.0.5 - Initial Release**
+- Multi-Provider Support (Voiceover & Sarvam AI).
+- Text-to-Speech (TTS) generation and module management.
+- Real-time Audio Playback Architecture and UI updates.
+
+*See the full [Changelog](Assets/Voiceover/CHANGELOG.md) for a complete history of updates.*
+
+## �📦 Installation
 
 1.  **Clone the Repository**:
     ```bash
