@@ -6,6 +6,7 @@ using System.IO.Compression;
 using FF.ElevenLabs.Editor.Styles;
 using FF.ElevenLabs.Editor.Components;
 using FF.ElevenLabs.Editor.Popups;
+using FF.ElevenLabs;
 
 namespace FF.ElevenLabs.Editor.Views
 {
@@ -429,7 +430,18 @@ namespace FF.ElevenLabs.Editor.Views
             
             try 
             {
-                var rawClip = await ElevenLabsAPI.GenerateVoiceAsync(step.voText, vId, module.defaultVoiceSettings);
+                var config = ElevenLabsConfig.FindOrCreate();
+                AudioClip rawClip = null;
+
+                if (config.activeProvider == ElevenLabsConfig.VoiceProvider.ElevenLabs)
+                {
+                    rawClip = await ElevenLabsAPI.GenerateVoiceAsync(step.voText, vId, module.defaultVoiceSettings);
+                }
+                else
+                {
+                    rawClip = await SarvamAIAPI.GenerateVoiceAsync(step.voText, vId);
+                }
+
                 if (rawClip != null)
                 {
                     string modFolder = $"Assets/ElevenLabs/Generated/{module.name}";

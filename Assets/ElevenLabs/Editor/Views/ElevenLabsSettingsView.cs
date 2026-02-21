@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using FF.ElevenLabs.Editor.Styles;
 using FF.ElevenLabs.Editor.Components;
+using FF.ElevenLabs;
 
 namespace FF.ElevenLabs.Editor.Views
 {
@@ -12,6 +13,7 @@ namespace FF.ElevenLabs.Editor.Views
         private System.Action onLogout;
 
         private string apiKey = "";
+        private string sarvamApiKey = "";
         private bool isVerifying = false;
         private string verificationError = "";
         
@@ -25,8 +27,9 @@ namespace FF.ElevenLabs.Editor.Views
             this.onAuthenticated = onAuthSuccess;
             this.onLogout = onLogoutCallback;
             
-            // Load existing key
+            // Load existing keys
             this.apiKey = ElevenLabsUtilities.GetAPIKey();
+            this.sarvamApiKey = ElevenLabsUtilities.GetSarvamAPIKey();
         }
 
         public void DrawSettingsUI()
@@ -34,17 +37,43 @@ namespace FF.ElevenLabs.Editor.Views
             ElevenLabsEditorStyles.Init();
 
             GUILayout.BeginVertical(EditorStyles.helpBox);
-            GUILayout.Label("Account Configuration", EditorStyles.boldLabel);
+            GUILayout.Label("Browser Configuration", EditorStyles.boldLabel);
             GUILayout.Space(10);
-            
-            GUILayout.Label("Current API Key", EditorStyles.label);
-            GUILayout.BeginHorizontal();
-            apiKey = EditorGUILayout.PasswordField(apiKey, GUILayout.Width(300));
-            if (GUILayout.Button("Update & Verify", GUILayout.Height(18)))
+
+            var config = ElevenLabsConfig.FindOrCreate();
+            EditorGUI.BeginChangeCheck();
+            config.activeProvider = (ElevenLabsConfig.VoiceProvider)EditorGUILayout.EnumPopup("Active Provider", config.activeProvider);
+            if (EditorGUI.EndChangeCheck())
             {
+                EditorUtility.SetDirty(config);
+                AssetDatabase.SaveAssets();
                 VerifyCredentials();
             }
-            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            
+            if (config.activeProvider == ElevenLabsConfig.VoiceProvider.ElevenLabs)
+            {
+                GUILayout.Label("ElevenLabs API Key", EditorStyles.label);
+                GUILayout.BeginHorizontal();
+                apiKey = EditorGUILayout.PasswordField(apiKey, GUILayout.Width(300));
+                if (GUILayout.Button("Update & Verify", GUILayout.Height(18)))
+                {
+                    VerifyCredentials();
+                }
+                GUILayout.EndHorizontal();
+            }
+            else
+            {
+                GUILayout.Label("Sarvam AI API Key", EditorStyles.label);
+                GUILayout.BeginHorizontal();
+                sarvamApiKey = EditorGUILayout.PasswordField(sarvamApiKey, GUILayout.Width(300));
+                if (GUILayout.Button("Update & Verify", GUILayout.Height(18)))
+                {
+                    VerifyCredentials();
+                }
+                GUILayout.EndHorizontal();
+            }
             
             GUILayout.Space(10);
             GUILayout.Label("Preferences", EditorStyles.boldLabel);
@@ -90,12 +119,13 @@ namespace FF.ElevenLabs.Editor.Views
             
             GUILayout.Label("Account Actions", EditorStyles.boldLabel);
             GUI.backgroundColor = new Color(1f, 0.7f, 0.7f);
-            if (GUILayout.Button("Logout / Clear Key", GUILayout.Height(30)))
+            if (GUILayout.Button("Logout / Clear All Keys", GUILayout.Height(30)))
             {
-                if (EditorUtility.DisplayDialog("Logout", "Are you sure you want to remove your API Key?", "Yes", "Cancel"))
+                if (EditorUtility.DisplayDialog("Logout", "Are you sure you want to remove all API Keys?", "Yes", "Cancel"))
                 {
                     ElevenLabsUtilities.Logout();
                     apiKey = "";
+                    sarvamApiKey = "";
                     onLogout?.Invoke();
                 }
             }
@@ -163,10 +193,25 @@ namespace FF.ElevenLabs.Editor.Views
 
         public async void VerifyCredentials()
         {
-            if (string.IsNullOrEmpty(apiKey))
+            var config = ElevenLabsConfig.FindOrCreate();
+            
+            if (config.activeProvider == ElevenLabsConfig.VoiceProvider.ElevenLabs)
             {
-                verificationError = "API Key cannot be empty.";
-                return;
+                if (string.IsNullOrEmpty(apiKey))
+                {
+                    verificationError = "ElevenLabs API Key cannot be empty.";
+                    return;
+                }
+                ElevenLabsUtilities.SaveAPIKey(apiKey);
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(sarvamApiKey))
+                {
+                    verificationError = "Sarvam AI API Key cannot be empty.";
+                    return;
+                }
+                ElevenLabsUtilities.SaveSarvamAPIKey(sarvamApiKey);
             }
 
             isVerifying = true;
@@ -174,61 +219,67 @@ namespace FF.ElevenLabs.Editor.Views
             voicePermissionStatus = "Checking...";
             ttsPermissionStatus = "Checking...";
             historyPermissionStatus = "Checking...";
-            
-            ElevenLabsUtilities.SaveAPIKey(apiKey);
 
-            // 1. Test Voice Access
-            var voices = await ElevenLabsAPI.GetVoicesAsync();
-            if (voices != null)
+            if (config.activeProvider == ElevenLabsConfig.VoiceProvider.ElevenLabs)
             {
-                voicePermissionStatus = "Active";
-            }
-            else
-            {
-                voicePermissionStatus = "Failed or Access Denied";
-            }
-
-            // 2. Test TTS Access (only if voices ok, need a voice ID)
-            if (voicePermissionStatus == "Active" && voices.Count > 0)
-            {
-                // Try generating a very small sample "a"
-                // Using the first available voice
-                var clip = await ElevenLabsAPI.GenerateVoiceAsync("a", voices[0].voice_id);
-                if (clip != null)
+                // 1. Test Voice Access
+                var voices = await ElevenLabsAPI.GetVoicesAsync();
+                if (voices != null)
                 {
-                    ttsPermissionStatus = "Active";
+                    voicePermissionStatus = "Active";
                 }
                 else
                 {
-                    ttsPermissionStatus = "Failed or Access Denied";
+                    voicePermissionStatus = "Failed or Access Denied";
                 }
-            }
-            else
-            {
-                if (voicePermissionStatus != "Active") ttsPermissionStatus = "Cannot Check (Voice API Failed)";
-                else ttsPermissionStatus = "Failed (No voices found)";
-            }
 
-            // 3. Test History Access
-            var history = await ElevenLabsAPI.GetHistoryAsync();
-            if (history != null)
-            {
-                historyPermissionStatus = "Active";
+                // 2. Test TTS Access
+                if (voicePermissionStatus == "Active" && voices.Count > 0)
+                {
+                    var clip = await ElevenLabsAPI.GenerateVoiceAsync("a", voices[0].voice_id);
+                    if (clip != null) ttsPermissionStatus = "Active";
+                    else ttsPermissionStatus = "Failed or Access Denied";
+                }
+                else
+                {
+                    ttsPermissionStatus = "Cannot Check";
+                }
+
+                // 3. Test History Access
+                var history = await ElevenLabsAPI.GetHistoryAsync();
+                if (history != null) historyPermissionStatus = "Active";
+                else historyPermissionStatus = "Failed or Access Denied";
             }
             else
             {
-                historyPermissionStatus = "Failed or Access Denied";
+                // Sarvam AI Verification
+                var voices = await SarvamAIAPI.GetVoicesAsync();
+                if (voices != null)
+                {
+                    voicePermissionStatus = "Active (Static List)";
+                }
+                else
+                {
+                    voicePermissionStatus = "Failed";
+                }
+
+                // Test TTS with a dummy text
+                var clip = await SarvamAIAPI.GenerateVoiceAsync("Test", "shubh");
+                if (clip != null) ttsPermissionStatus = "Active";
+                else ttsPermissionStatus = "Failed";
+
+                historyPermissionStatus = "Not Supported by Sarvam AI";
             }
 
             isVerifying = false;
 
-            if (voicePermissionStatus == "Active" && ttsPermissionStatus == "Active")
+            if (voicePermissionStatus.Contains("Active") && ttsPermissionStatus == "Active")
             {
                 onAuthenticated?.Invoke();
             }
             else
             {
-                verificationError = "Could not verify full access. Please check your API permissions.";
+                verificationError = "Could not verify full access for the selected provider.";
             }
         }
         
@@ -237,33 +288,51 @@ namespace FF.ElevenLabs.Editor.Views
             ElevenLabsEditorStyles.Init();
 
             GUILayout.BeginVertical(EditorStyles.helpBox);
-            GUILayout.Label("Setup Instructions", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField("1. Create an Account on ElevenLabs.io", EditorStyles.wordWrappedLabel);
+            GUILayout.Label("Select Voice Provider", EditorStyles.boldLabel);
             
-            if (GUILayout.Button("Open ElevenLabs Website", GUILayout.Width(200)))
-            {
-                ElevenLabsUtilities.OpenWebsite("https://elevenlabs.io/?from=partnerunity4928");
-            }
+            var config = ElevenLabsConfig.FindOrCreate();
+            config.activeProvider = (ElevenLabsConfig.VoiceProvider)EditorGUILayout.EnumPopup("Provider", config.activeProvider);
             
             GUILayout.Space(10);
-            EditorGUILayout.LabelField("2. Create a new API Key", EditorStyles.wordWrappedLabel);
-            EditorGUILayout.LabelField("   - Go to Profile > API Keys", EditorStyles.miniLabel);
-            EditorGUILayout.LabelField("   - Click 'Create New API Key'", EditorStyles.miniLabel);
-            EditorGUILayout.LabelField("   - Ensure permissions are allowed", EditorStyles.miniLabel);
             
-            if (GUILayout.Button("Open API Keys Page", GUILayout.Width(200)))
+            if (config.activeProvider == ElevenLabsConfig.VoiceProvider.ElevenLabs)
             {
-                ElevenLabsUtilities.OpenWebsite("https://elevenlabs.io/app/settings/api-keys");
-            }
+                GUILayout.Label("ElevenLabs Setup", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("1. Create an Account on ElevenLabs.io", EditorStyles.wordWrappedLabel);
+                if (GUILayout.Button("Open ElevenLabs Website", GUILayout.Width(200)))
+                    ElevenLabsUtilities.OpenWebsite("https://elevenlabs.io/?from=partnerunity4928");
+                
+                GUILayout.Space(10);
+                EditorGUILayout.LabelField("2. Create a new API Key", EditorStyles.wordWrappedLabel);
+                if (GUILayout.Button("Open API Keys Page", GUILayout.Width(200)))
+                    ElevenLabsUtilities.OpenWebsite("https://elevenlabs.io/app/settings/api-keys");
 
-            GUILayout.Space(20);
-            GUILayout.Label("Authentication", EditorStyles.boldLabel);
-            
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("API Key:", GUILayout.Width(60));
-            apiKey = EditorGUILayout.PasswordField(apiKey);
-            if (GUILayout.Button("Paste", GUILayout.Width(60))) apiKey = GUIUtility.systemCopyBuffer;
-            GUILayout.EndHorizontal();
+                GUILayout.Space(20);
+                GUILayout.Label("TwelveLabs API Key", EditorStyles.boldLabel);
+                GUILayout.BeginHorizontal();
+                apiKey = EditorGUILayout.PasswordField(apiKey);
+                if (GUILayout.Button("Paste", GUILayout.Width(60))) apiKey = GUIUtility.systemCopyBuffer;
+                GUILayout.EndHorizontal();
+            }
+            else
+            {
+                GUILayout.Label("Sarvam AI Setup", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("1. Create an Account on Sarvam.ai", EditorStyles.wordWrappedLabel);
+                if (GUILayout.Button("Open Sarvam AI Website", GUILayout.Width(200)))
+                    ElevenLabsUtilities.OpenWebsite("https://www.sarvam.ai/");
+                
+                GUILayout.Space(10);
+                EditorGUILayout.LabelField("2. Get your API Subscription Key from Dashboard", EditorStyles.wordWrappedLabel);
+                if (GUILayout.Button("Open Sarvam Dashboard", GUILayout.Width(200)))
+                    ElevenLabsUtilities.OpenWebsite("https://dashboard.sarvam.ai/");
+
+                GUILayout.Space(20);
+                GUILayout.Label("Sarvam AI API Key", EditorStyles.boldLabel);
+                GUILayout.BeginHorizontal();
+                sarvamApiKey = EditorGUILayout.PasswordField(sarvamApiKey);
+                if (GUILayout.Button("Paste", GUILayout.Width(60))) sarvamApiKey = GUIUtility.systemCopyBuffer;
+                GUILayout.EndHorizontal();
+            }
 
             GUILayout.Space(10);
 
@@ -290,10 +359,12 @@ namespace FF.ElevenLabs.Editor.Views
                  GUILayout.Label("Permissions Status:", EditorStyles.boldLabel);
                  DrawStatusLabel("Voice API:", voicePermissionStatus);
                  DrawStatusLabel("TTS API:", ttsPermissionStatus);
-                 DrawStatusLabel("History API:", historyPermissionStatus);
+                 if (config.activeProvider == ElevenLabsConfig.VoiceProvider.ElevenLabs)
+                    DrawStatusLabel("History API:", historyPermissionStatus);
             }
             
             GUILayout.EndVertical();
         }
     }
 }
+

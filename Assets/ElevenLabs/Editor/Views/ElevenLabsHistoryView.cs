@@ -3,6 +3,7 @@ using UnityEditor;
 using System.Collections.Generic;
 using FF.ElevenLabs.Editor.Styles;
 using FF.ElevenLabs.Editor.Components;
+using FF.ElevenLabs;
 
 namespace FF.ElevenLabs.Editor.Views
 {

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 472c6f16242d249ed889c6e42ac91809, type: 3}
   m_Name: Noir Detective
   m_EditorClassIdentifier: 
-  defaultVoiceId: wlmwDR77ptH6bKHZui0l
+  defaultVoiceId: shubh
   defaultVoiceSettings:
     stability: 0.5
     similarity_boost: 0.75
@@ -28,25 +28,25 @@ MonoBehaviour:
     lastGeneratedTime: 1/27/2026 5:47:45 PM
   - title: She walked in with t...
     voText: She walked in with trouble written all over her face.
-    assignedVoiceId: 
-    generatedAudio: {fileID: 0}
-    isDirty: 1
-    lastGeneratedTime: 
+    assignedVoiceId: shubh
+    generatedAudio: {fileID: 8300000, guid: 243a1ab556e2f43a8820808e455987c0, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 2/21/2026 2:09:27 AM
   - title: I told her I don't d...
     voText: I told her I don''t do domestic cases anymore.
     assignedVoiceId: 
-    generatedAudio: {fileID: 0}
-    isDirty: 1
-    lastGeneratedTime: 
+    generatedAudio: {fileID: 8300000, guid: 7e7ca075ac12242b38a936a74c932f8c, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 2/21/2026 2:09:42 AM
   - title: But the look in her ...
     voText: But the look in her eyes said this wasn''t about a missing husband.
     assignedVoiceId: 
-    generatedAudio: {fileID: 0}
-    isDirty: 1
-    lastGeneratedTime: 
+    generatedAudio: {fileID: 8300000, guid: 2f357c77ec8f34925a440ef6efdf1509, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 2/21/2026 2:09:44 AM
   - title: The money was good, ...
     voText: The money was good, but the feeling in my gut was bad.
     assignedVoiceId: 
-    generatedAudio: {fileID: 0}
-    isDirty: 1
-    lastGeneratedTime: 
+    generatedAudio: {fileID: 8300000, guid: 3fad629e5ee614c2a88d301a8643b5c7, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 2/21/2026 2:09:47 AM

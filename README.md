@@ -1,33 +1,35 @@
-# ElevenLabs Unity Plugin
+# Unity AI Voice Over Plugin
 
-![ElevenLabs Unity Plugin](https://img.shields.io/badge/Unity-2021.3%2B-green.svg)
+![Unity Support](https://img.shields.io/badge/Unity-2021.3%2B-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
 > [!TIP]
-> **Powered by ElevenLabs**
-> This plugin uses the industry-leading **ElevenLabs API** for lifelike speech synthesis.
-> [**Create your free account here**](https://elevenlabs.io/?from=partner) to get your API key and start generating voices!
+> **Multi-Provider Support: ElevenLabs & Sarvam AI**
+> This plugin integrates industry-leading APIs for lifelike speech synthesis.
+>
+> | **English & Global** | **Specialized Indic (Hindi, etc.)** |
+> | :---: | :---: |
+> | ![ElevenLabs](.github/images/elevenlabs_unity.png) | ![Sarvam AI](.github/images/sarvam_unity.png) |
+> | [**ElevenLabs**](https://elevenlabs.io/?from=partner) | [**Sarvam AI**](https://www.sarvam.ai/) |
 
-A powerful Unity Editor plugin that integrates the **ElevenLabs Text-to-Speech API** directly into your workflow. Generate high-quality AI voiceovers, manage voice lines in modular steps, and streamline your comprehensive audio pipeline without leaving Unity.
+A powerful Unity Editor plugin that provides a seamless **Voice Over** workflow directly within your project. Integrate high-quality AI speech from providers like **ElevenLabs** and **Sarvam AI**, manage voice lines in modular steps, and streamline your audio pipeline without leaving the Unity Editor.
 
 ## 🗺️ Roadmap & Features
 
-We plan to bring the full power of ElevenLabs to Unity. Below is the roadmap of features we are implementing.
+We aim to provide a comprehensive voice-over solution for Unity.
 
-| Feature | Description | Status | Priority |
+| Feature | Description | Status | Provider |
 | :--- | :--- | :--- | :--- |
-| **Text-to-Speech (TTS)** | Generate lifelike speech from text using standard models. | ✅ **Implemented** | - |
-| **Voice Selection** | Browse and select voices from your ElevenLabs library. | ✅ **Implemented** | - |
-| **Batch Generation** | Generate audio for multiple lines/steps at once. | ✅ **Implemented** | - |
-| **Voice History** | View and retrieve past generations. | ✅ **Implemented** | - |
-| **ZIP Export** | Export generated audio as a ZIP archive. | ✅ **Implemented** | - |
-| **Speech-to-Speech** | Transform input audio into a different voice (e.g., creature voices). | 🚧 **Planned** | High |
-| **Sound Effects (SFX)** | Generate sound effects from text descriptions. | 🚧 **Planned** | High |
-| **Runtime API** | Generate voiceovers dynamically in a built game (at runtime). | 🚧 **Planned** | High |
-| **Voice Design** | Create new custom voices directly within the Editor. | ⏳ **Backlog** | Medium |
-| **Dubbing / Localization** | Auto-translate and dub voice lines into multiple languages. | ⏳ **Backlog** | Medium |
-| **Pronunciation Dictionaries** | Custom rules for character names and lore terms. | ⏳ **Backlog** | Low |
-| **Timeline Integration** | Native integration with Unity's Timeline for cutscenes. | ⏳ **Backlog** | Low |
+| **Multi-Provider Support** | Toggle between ElevenLabs and Sarvam AI seamlessly. | ✅ **Implemented** | All |
+| **Text-to-Speech (TTS)** | Generate lifelike speech from text using standard models. | ✅ **Implemented** | All |
+| **Voice Selection** | Browse and select voices from your provider library. | ✅ **Implemented** | All |
+| **Batch Generation** | Generate audio for multiple lines/steps at once. | ✅ **Implemented** | All |
+| **Voice History** | View and retrieve past generations. | ✅ **Implemented** | ElevenLabs |
+| **ZIP Export** | Export generated audio as a ZIP archive. | ✅ **Implemented** | All |
+| **Speech-to-Speech** | Transform input audio into a different voice. | 🚧 **Planned** | ElevenLabs |
+| **Sound Effects (SFX)** | Generate sound effects from text descriptions. | 🚧 **Planned** | ElevenLabs |
+| **Runtime API** | Generate voiceovers dynamically in a built game. | 🚧 **Planned** | All |
+| **Timeline Integration** | Native integration with Unity's Timeline for cutscenes. | ⏳ **Backlog** | All |
 
 > **Legend**: ✅ Implemented | 🚧 Planned (Next Up) | ⏳ Backlog (Later)
 
@@ -39,15 +41,16 @@ We plan to bring the full power of ElevenLabs to Unity. Below is the roadmap of 
     ```
 2.  **Copy to Project**:
     *   Copy the `Assets/ElevenLabs` folder into your Unity project's `Assets` directory.
-    *   *Alternatively, you can just drag and drop the folder if you downloaded the ZIP.*
+    *   *(Note: The folder name will be updated to 'VoiceOver' in future versions, for now it remains 'ElevenLabs' for compatibility).*
 
 ## 🚀 Usage
 
 1.  **Open the Window**:
     *   Go to `Window > Voice Over` in the Unity Editor menu (or press `Cmd+Opt+V` / `Ctrl+Alt+V`).
-2.  **Authentication**:
-    *   Enter your ElevenLabs API Key (found in your [ElevenLabs Profile](https://elevenlabs.io/)).
-    *   The key is stored securely in your local EditorPrefs.
+2.  **Provider Setup**:
+    *   Navigate to the **Settings** tab.
+    *   Choose your **Active Provider** (ElevenLabs or Sarvam AI).
+    *   Enter your respective API Key.
 3.  **Create a Module**:
     *   Click `+ New Module` in the sidebar.
     *   Give it a name (e.g., "IntroDialogue").
@@ -65,68 +68,49 @@ The plugin features a robust audio playback system with real-time UI updates and
 
 ### Audio Flow
 
-![Audio Playback Flow](/.github/images/final_audio_flow_1769518922058.png)
+![Audio Playback Flow](.github/images/final_audio_flow_1769518922058.png)
 
 **Key Components:**
 
 1. **Audio Sources** - Four entry points for audio playback:
-   - History Tab - Load previously generated audio
+   - History Tab (ElevenLabs) - Load previously generated audio
    - Voice Modules (Select) - Auto-play when selecting steps
    - Voice Modules (Generate) - Auto-play after generation
    - Bottom Player UI - Manual playback controls
 
-2. **Centralized Playback** - All sources route through `LoadAudioToPlayer()`:
+2. **Centralized Playback** - All sources route through a unified playback bridge:
    - Stops current audio
    - Updates player state
    - Creates waveform editor
-   - Optionally starts playback
    - Triggers UI update
 
-3. **Real-time Updates** - `Update()` loop ensures UI reflects playback state:
+3. **Real-time Updates** - UI reflects playback state automatically:
    - Continuously checks if audio is playing
    - Updates play/pause button icon in real-time
-   - No manual refresh needed
-
-4. **Bottom Player UI** - Displays:
-   - Waveform visualization
-   - Play/pause controls
-   - Audio metadata (format, sample rate, length)
-   - Save functionality
 
 ### Technical Details
 
-- **Unity AudioUtil Integration**: Uses reflection to access Unity's internal audio preview system
-- **Cross-version Compatibility**: Multi-fallback approach for different Unity versions
-- **Error Handling**: Comprehensive try-catch blocks prevent crashes
-- **Performance**: Minimal overhead with smart repaint logic
+- **Multi-Provider Bridge**: Abstracted API calls to support both ElevenLabs and Sarvam AI.
+- **Unity AudioUtil Integration**: Uses reflection to access Unity's internal audio preview system.
+- **Error Handling**: Comprehensive try-catch blocks prevent crashes.
+- **Performance**: Minimal overhead with smart repaint logic.
 
 For detailed technical documentation, see:
 - [Final Audio Audit](FINAL_AUDIO_AUDIT.md) - Complete flow analysis
 - [Audio Editor Review](AUDIO_EDITOR_REVIEW.md) - Editor utility usage
-- [Audio Playback Fixes](AUDIO_PLAYBACK_FIXES.md) - Implementation details
-
 
 ## 🤝 Contribution
 
-We welcome contributions from the community! Whether it's a bug fix, new feature, or documentation improvement, your help is appreciated.
-
-### How to Contribute
-1.  **Fork the Repository**: Click the "Fork" button at the top right of this page.
-2.  **Clone your Fork**: `git clone https://github.com/YOUR_USERNAME/ElevenLabs-Unity-Plugin.git`
-3.  **Create a Branch**: `git checkout -b feature/amazing-feature`
-4.  **Make Changes**: Implement your feature or fix.
-5.  **Commit**: `git commit -m "Add amazing feature"`
-6.  **Push**: `git push origin feature/amazing-feature`
-7.  **Open a Pull Request**: Submit your PR to the `main` branch of this repository.
+We welcome contributions from the community! Whether it's a bug fix, new provider integration, or documentation improvement, your help is appreciated.
 
 ### Guidelines
 *   Please follow the existing code style (C# standards).
 *   Ensure your code compiles without errors in the latest Unity LTS.
-*   Namespace all new scripts under `FF.ElevenLabs` or `FF.ElevenLabs.Editor`.
+*   Namespace all new scripts under `FF.ElevenLabs` (Legacy) or appropriate sub-namespaces.
 
 ## ⭐ Support the Project
 
 If you find this plugin useful for your projects, please consider **giving it a Star** ⭐️ on GitHub! It helps more developers find the tool and motivates us to add more features.
 
 ---
-*This project is not officially affiliated with ElevenLabs.*
+*This project is an independent tool and is not officially affiliated with ElevenLabs or Sarvam AI.*

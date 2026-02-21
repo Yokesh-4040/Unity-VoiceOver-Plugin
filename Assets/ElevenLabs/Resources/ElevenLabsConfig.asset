@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a05d2dc62bb1442ab42402f62a35464, type: 3}
   m_Name: ElevenLabsConfig
   m_EditorClassIdentifier: 
+  activeProvider: 1
   defaultModelId: eleven_monolingual_v1
   defaultStability: 0.5
   defaultSimilarity: 0.75

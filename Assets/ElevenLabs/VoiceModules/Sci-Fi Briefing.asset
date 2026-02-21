@@ -12,40 +12,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 472c6f16242d249ed889c6e42ac91809, type: 3}
   m_Name: Sci-Fi Briefing
   m_EditorClassIdentifier: 
-  defaultVoiceId: TxGEqnHWrfWFTfGW9XjX
+  defaultVoiceId: shreya
   defaultVoiceSettings:
     stability: 0.5
     similarity_boost: 0.75
     style: 0
     use_speaker_boost: 1
   steps:
-  - title: 'System initializatio...'
+  - title: System initializatio...
     voText: System initialization complete. All diagnostics green.
-    assignedVoiceId: 
-    generatedAudio: {fileID: 0}
-    isDirty: 1
-    lastGeneratedTime: 
-  - title: 'Commander, we have d...'
+    assignedVoiceId: rahul
+    generatedAudio: {fileID: 8300000, guid: 3e26cc2048acb440584b6ae9b983c7e2, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 2/21/2026 2:24:27 AM
+  - title: Commander, we have d...
     voText: Commander, we have detected a distress signal from the outer rim.
     assignedVoiceId: 
-    generatedAudio: {fileID: 0}
-    isDirty: 1
-    lastGeneratedTime: 
-  - title: 'Engaging warp drive ...'
-    voText: Engaging warp drive in T-minus ten seconds.
-    assignedVoiceId: 
-    generatedAudio: {fileID: 0}
-    isDirty: 1
-    lastGeneratedTime: 
-  - title: 'Shields are holding ...'
+    generatedAudio: {fileID: 8300000, guid: 96a79804ac55847b0b5e14cf51a48c1b, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 2/21/2026 2:24:07 AM
+  - title: Engaging warp drive ...
+    voText: we are going to ai summit tomorrow
+    assignedVoiceId: priya
+    generatedAudio: {fileID: 8300000, guid: aea7ae30022d444ebbc7cf2e6209d6b4, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 2/21/2026 2:25:20 AM
+  - title: Shields are holding ...
     voText: Shields are holding at 80 percent magnitude.
     assignedVoiceId: 
-    generatedAudio: {fileID: 0}
-    isDirty: 1
-    lastGeneratedTime: 
-  - title: 'Data upload confirme...'
+    generatedAudio: {fileID: 8300000, guid: 32d080e320b1741e0a1a5140d0db47c0, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 2/21/2026 2:23:28 AM
+  - title: Data upload confirme...
     voText: Data upload confirmed. Welcome to the Galactic Federation.
     assignedVoiceId: 
-    generatedAudio: {fileID: 0}
-    isDirty: 1
-    lastGeneratedTime:
+    generatedAudio: {fileID: 8300000, guid: c223c9ee2c6c0456ab26272324ff9901, type: 3}
+    isDirty: 0
+    lastGeneratedTime: 2/21/2026 2:23:31 AM

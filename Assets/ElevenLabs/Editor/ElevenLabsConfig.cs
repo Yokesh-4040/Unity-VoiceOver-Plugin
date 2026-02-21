@@ -5,7 +5,17 @@ namespace FF.ElevenLabs
     //[CreateAssetMenu(fileName = "ElevenLabsConfig", menuName = "ElevenLabs/Configuration")]
     public class ElevenLabsConfig : ScriptableObject
     {
+        public enum VoiceProvider
+        {
+            ElevenLabs,
+            SarvamAI
+        }
+
+        [Header("Provider Configuration")]
+        public VoiceProvider activeProvider = VoiceProvider.ElevenLabs;
+
         [Header("API Configuration")]
+
         [Tooltip("The ID of the default model to use for generation")]
         public string defaultModelId = "eleven_multilingual_v2";
 

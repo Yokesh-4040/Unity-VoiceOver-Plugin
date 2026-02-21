@@ -5,6 +5,7 @@ using System.Linq;
 using FF.ElevenLabs.Editor.Styles;
 using FF.ElevenLabs.Editor.Components;
 using FF.ElevenLabs.Editor.Views;
+using FF.ElevenLabs;
 
 namespace FF.ElevenLabs.Editor
 {
@@ -24,7 +25,9 @@ namespace FF.ElevenLabs.Editor
         private int selectedTab = 0;
         private Vector2 sidebarScrollPosition;
         private Vector2 contentScrollPosition;
-        private Texture2D headerImage;
+        private Texture2D elevenLabsLogo;
+        private Texture2D sarvamLogo;
+        private Texture2D currentHeaderImage;
 
         [MenuItem("Window/Voice Over %&v")]
         public static void ShowWindow()
@@ -39,7 +42,10 @@ namespace FF.ElevenLabs.Editor
             this.minSize = new Vector2(1000, 700);
             this.maxSize = new Vector2(1000, 700);
 
-            headerImage = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/ElevenLabs/Sprites/elevenlabs_unity.png");
+            elevenLabsLogo = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/ElevenLabs/Sprites/elevenlabs_unity.png");
+            sarvamLogo = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/ElevenLabs/Sprites/sarvam_unity.png");
+            UpdateBranding();
+
 
             // Initialize Components
             audioPlayer = new ElevenLabsAudioPlayer(this);
@@ -62,12 +68,16 @@ namespace FF.ElevenLabs.Editor
 
         private void CheckAuth()
         {
-             bool hasKey = ElevenLabsUtilities.HasAPIKey();
+             var config = ElevenLabsConfig.FindOrCreate();
+             bool hasKey = false;
+             
+             if (config.activeProvider == ElevenLabsConfig.VoiceProvider.ElevenLabs)
+                 hasKey = ElevenLabsUtilities.HasAPIKey();
+             else
+                 hasKey = ElevenLabsUtilities.HasSarvamAPIKey();
+
              if (hasKey)
              {
-                 // We could auto-verify here, but for now let's just assume if key exists we try to load.
-                 // Ideally verifying credentials is better.
-                 // Using the SettingsView to verify would be consistent.
                  settingsView.VerifyCredentials();
              }
         }
@@ -91,21 +101,43 @@ namespace FF.ElevenLabs.Editor
 
         private async void FetchVoices()
         {
-            var voices = await ElevenLabsAPI.GetVoicesAsync();
-            if (voices != null)
+            var config = ElevenLabsConfig.FindOrCreate();
+            List<Voice> voices = null;
+
+            if (config.activeProvider == ElevenLabsConfig.VoiceProvider.ElevenLabs)
             {
-                var config = ElevenLabsConfig.FindOrCreate();
-                if (config != null && config.customVoices != null)
+                voices = await ElevenLabsAPI.GetVoicesAsync();
+                if (voices != null && config.customVoices != null)
                 {
                     voices.AddRange(config.customVoices);
                 }
+            }
+            else
+            {
+                voices = await SarvamAIAPI.GetVoicesAsync();
+            }
+
+            if (voices != null)
+            {
                 availableVoices = voices;
                 modulesView.SetAvailableVoices(availableVoices);
+                UpdateBranding();
                 Repaint();
             }
         }
 
+        private void UpdateBranding()
+        {
+            var config = ElevenLabsConfig.FindOrCreate();
+            if (config.activeProvider == ElevenLabsConfig.VoiceProvider.ElevenLabs)
+                currentHeaderImage = elevenLabsLogo;
+            else
+                currentHeaderImage = sarvamLogo;
+        }
+
+
         private void OnGUI()
+
         {
             ElevenLabsEditorStyles.Init();
 
@@ -140,13 +172,13 @@ namespace FF.ElevenLabs.Editor
 
             // Left: Branding (Logo)
             GUILayout.BeginVertical();
-            if (headerImage != null)
+            if (currentHeaderImage != null)
             {
-                float aspect = (float)headerImage.width / headerImage.height;
+                float aspect = (float)currentHeaderImage.width / currentHeaderImage.height;
                 float height = 40f; 
                 float width = height * aspect;
                 
-                if (GUILayout.Button(headerImage, GUIStyle.none, GUILayout.Width(width), GUILayout.Height(height)))
+                if (GUILayout.Button(currentHeaderImage, GUIStyle.none, GUILayout.Width(width), GUILayout.Height(height)))
                 {
                     selectedTab = 0;
                 }
