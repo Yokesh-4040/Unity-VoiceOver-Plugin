@@ -2,19 +2,13 @@
 
 Excited to share a major update to my open-source Unity Voiceover Plugin! 🎙️🚀
 
-I've refactored the architecture to support **multi-provider voice generation**, transforming it into a universal voiceover tool. We now have seamless, native support for **ElevenLabs** and **Sarvam AI**, directly within the Unity Editor! 
+I recently integrated **Sarvam AI** into the plugin, and I am genuinely blown away by how incredibly natural and high-quality it sounds, especially for Indian languages! If you are building localized games or experiences, the text-to-speech quality for languages like Hindi, Tamil, Telugu, and more is absolutely next-level.
 
-**What you can do without leaving Unity:**
-✨ **Switch Seamlessly**: Swap between AI voice providers instantly to find the perfect voice for your character.
-📦 **Batch Processing**: Organize and generate entire dialogue trees in a single click using Voice Modules.
-💾 **Auto-Asset Pipeline**: Generated audio is automatically saved as ready-to-use AudioClip assets in your project!
-📜 **History Manager**: Keep track of and reuse your past generations easily from the built-in History View.
+With this update, the plugin is now a **multi-provider** voiceover tool. You get seamless, native access to both **Sarvam AI** and **ElevenLabs**, allowing you to generate and auto-save ready-to-use audio assets directly inside the Unity Editor. No more switching back and forth between browser tabs and your project—it handles the entire workflow for you.
 
-Whether you're rapid-prototyping immersive experiences or filling your game with high-quality localized placeholder voices, this plugin handles the entire workflow directly in your editor.
-
-I built this to save time for fellow Unity developers, and building in Sarvam AI alongside ElevenLabs brings even more powerful, localized text-to-speech possibilities.
+If you are a Unity developer looking to bring your characters to life with incredibly authentic, localized voices, you have to try this out!
 
 Check out the repo and let me know your thoughts! 👇
-🔗 GitHub: https://github.com/Yokesh-4040/ElevenLabs-Unity-Plugin
+🔗 GitHub: https://github.com/Yokesh-4040/Unity-VoiceOver-Plugin
 
-#Unity3D #GameDev #OpenSource #Voiceover #ElevenLabs #SarvamAI #AIinGaming #GameDevelopment
+#Unity3D #GameDev #OpenSource #Voiceover #SarvamAI #ElevenLabs #AIinGaming #GameDevelopment #IndicTech #Localization
