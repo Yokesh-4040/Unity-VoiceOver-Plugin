@@ -10,7 +10,7 @@
 > | **English & Global** | **Specialized Indic (Hindi, etc.)** |
 > | :---: | :---: |
 > | ![Voiceover](.github/images/voiceover_unity.png) | ![Sarvam AI](.github/images/sarvam_unity.png) |
-> | [**Voiceover**](https://voiceover.io/?from=partner) | [**Sarvam AI**](https://www.sarvam.ai/) |
+> | [**IIElevenLabs**](https://elevenlabs.io/) | [**Sarvam AI**](https://www.sarvam.ai/) |
 
 A powerful Unity Editor plugin that provides a seamless **Voice Over** workflow directly within your project. Integrate high-quality AI speech from providers like **Voiceover** and **Sarvam AI**, manage voice lines in modular steps, and streamline your audio pipeline without leaving the Unity Editor.
 
@@ -66,9 +66,6 @@ We aim to provide a comprehensive voice-over solution for Unity.
 
 The plugin features a robust audio playback system with real-time UI updates and consistent state management across all audio sources.
 
-### Audio Flow
-
-![Audio Playback Flow](.github/images/final_audio_flow_1769518922058.png)
 
 **Key Components:**
 
