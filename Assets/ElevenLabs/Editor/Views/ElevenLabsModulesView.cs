@@ -98,6 +98,7 @@ namespace FF.ElevenLabs.Editor.Views
                     selectedModule = mod;
                     selectedStep = null; // Deselect step when module is selected
                     GUI.FocusControl(null);
+                    if (hostWindow is ElevenLabsEditorWindow w) w.selectedTab = 0;
                 }
                 
                 // Add Step Shortcut
@@ -106,6 +107,7 @@ namespace FF.ElevenLabs.Editor.Views
                     mod.steps.Add(new VoiceStep { title = $"Step {mod.steps.Count + 1}" });
                     EditorUtility.SetDirty(mod);
                     expandedModules.Add(mod); // Auto expand
+                    if (hostWindow is ElevenLabsEditorWindow w) w.selectedTab = 0;
                 }
                 
                 GUILayout.EndHorizontal();
@@ -152,6 +154,7 @@ namespace FF.ElevenLabs.Editor.Views
                             selectedModule = mod;
                             selectedStep = step;
                             GUI.FocusControl(null);
+                            if (hostWindow is ElevenLabsEditorWindow w) w.selectedTab = 0;
                             
                             // Auto-play on select
                             if (selectedStep.generatedAudio != null)
@@ -199,6 +202,7 @@ namespace FF.ElevenLabs.Editor.Views
             RefreshModuleList();
             selectedModule = newMod;
             selectedStep = null;
+            if (hostWindow is ElevenLabsEditorWindow w) w.selectedTab = 0;
         }
 
         private void DrawSelectedModule()

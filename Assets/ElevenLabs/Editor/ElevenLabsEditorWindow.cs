@@ -22,7 +22,7 @@ namespace FF.ElevenLabs.Editor
         private ElevenLabsSettingsView settingsView;
 
         // UI State
-        private int selectedTab = 0;
+        public int selectedTab = 0;
         private Vector2 sidebarScrollPosition;
         private Vector2 contentScrollPosition;
         private Texture2D elevenLabsLogo;
@@ -249,18 +249,13 @@ namespace FF.ElevenLabs.Editor
                  // --- 2. Contextual List ---
                  sidebarScrollPosition = EditorGUILayout.BeginScrollView(sidebarScrollPosition);
                  
-                 if (selectedTab == 0) // Modules
+                 if (selectedTab == 0 || selectedTab == 2) // Modules
                  {
                      modulesView.DrawModuleList();
                  }
                  else if (selectedTab == 1) // History
                  {
                      historyView.DrawList();
-                 }
-                 else if (selectedTab == 2) // Settings
-                 {
-                     GUILayout.Label("General Settings", EditorStyles.boldLabel);
-                     // User moved Star button to header, so simplified here
                  }
                  
                  EditorGUILayout.EndScrollView();
