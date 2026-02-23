@@ -1,8 +1,8 @@
 # Voice Over Studio
-A powerful Unity Editor plugin that provides a seamless Voice Over workflow directly within your project. Integrate high-quality AI speech from providers like Voiceover and Sarvam AI, manage voice lines in modular steps, and streamline your audio pipeline.
+A powerful Unity Editor plugin that provides a seamless Voice Over workflow directly within your project. Integrate high-quality AI speech from providers like ElevenLabs and Sarvam AI, manage voice lines in modular steps, and streamline your audio pipeline.
 
 ## Features
-- **Multi-Provider Support**: Toggle between Voiceover and Sarvam AI seamlessly.
+- **Multi-Provider Support**: Toggle between ElevenLabs and Sarvam AI seamlessly.
 - **Text-to-Speech (TTS)**: Generate lifelike speech from text using standard models.
 - **Voice Selection**: Browse and select voices from your provider library.
 - **Batch Generation**: Generate audio for multiple lines/steps at once.

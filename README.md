@@ -29,7 +29,7 @@ We aim to provide a comprehensive voice-over solution for Unity.
 
 | Feature | Description | Status | Provider |
 | :--- | :--- | :--- | :--- |
-| **Multi-Provider Support** | Toggle between Voiceover and Sarvam AI seamlessly. | ✅ **Implemented** | All |
+| **Multi-Provider Support** | Toggle between ElevenLabs and Sarvam AI seamlessly. | ✅ **Implemented** | All |
 | **Text-to-Speech (TTS)** | Generate lifelike speech from text using standard models. | ✅ **Implemented** | All |
 | **Voice Selection** | Browse and select voices from your provider library. | ✅ **Implemented** | All |
 | **Batch Generation** | Generate audio for multiple lines/steps at once. | ✅ **Implemented** | All |
@@ -117,7 +117,7 @@ The plugin features a robust audio playback system with real-time UI updates and
 
 ### Technical Details
 
-- **Multi-Provider Bridge**: Abstracted API calls to support both Voiceover and Sarvam AI.
+- **Multi-Provider Bridge**: Abstracted API calls to support both ElevenLabs and Sarvam AI.
 - **Unity AudioUtil Integration**: Uses reflection to access Unity's internal audio preview system.
 - **Error Handling**: Comprehensive try-catch blocks prevent crashes.
 - **Performance**: Minimal overhead with smart repaint logic.

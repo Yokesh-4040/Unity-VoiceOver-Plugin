@@ -42,7 +42,7 @@ namespace FF.Voiceover.Editor
             this.minSize = new Vector2(1000, 700);
             this.maxSize = new Vector2(1000, 700);
 
-            voiceoverLogo = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Voiceover/Sprites/voiceover_unity.png");
+            voiceoverLogo = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Voiceover/Sprites/elevenlabs_unity.png");
             sarvamLogo = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Voiceover/Sprites/sarvam_unity.png");
             UpdateBranding();
 

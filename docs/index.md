@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "Unity AI Voice Over"
   text: "Seamless Speech Synthesis"
-  tagline: "Integrate high-quality AI speech from providers like Voiceover and Sarvam AI directly into your Unity workflow.<br><br><img src='https://img.shields.io/badge/Unity-2022.3%2B-black?style=flat&logo=unity' alt='Unity 2022.3+' style='display:inline-block;' />&nbsp;<img src='https://img.shields.io/github/downloads/Yokesh-4040/Unity-VoiceOver-Plugin/total?style=flat&color=blue&logo=github' alt='Total Downloads' style='display:inline-block;' />"
+  tagline: "Integrate high-quality AI speech from providers like ElevenLabs and Sarvam AI directly into your Unity workflow.<br><br><img src='https://img.shields.io/badge/Unity-2022.3%2B-black?style=flat&logo=unity' alt='Unity 2022.3+' style='display:inline-block;' />&nbsp;<img src='https://img.shields.io/github/downloads/Yokesh-4040/Unity-VoiceOver-Plugin/total?style=flat&color=blue&logo=github' alt='Total Downloads' style='display:inline-block;' />"
   actions:
     - theme: brand
       text: Get Started
