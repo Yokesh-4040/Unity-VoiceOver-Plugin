@@ -4,7 +4,7 @@ We aim to provide a comprehensive voice-over solution for Unity.
 
 | Feature | Description | Status | Provider |
 | :--- | :--- | :--- | :--- |
-| **Multi-Provider Support** | Toggle between Voiceover and Sarvam AI seamlessly. | ✅ **Implemented** | All |
+| **Multi-Provider Support** | Toggle between ElevenLabs and Sarvam AI seamlessly. | ✅ **Implemented** | All |
 | **Text-to-Speech (TTS)** | Generate lifelike speech from text using standard models. | ✅ **Implemented** | All |
 | **Voice Selection** | Browse and select voices from your provider library. | ✅ **Implemented** | All |
 | **Batch Generation** | Generate audio for multiple lines/steps at once. | ✅ **Implemented** | All |
