@@ -24,7 +24,7 @@ features:
 
 <style>
 .VPButton.alt[href$="unitypackage"] {
-  background-image: url('/Unity-VoiceOver-Plugin/Unity_logo.png');
+  background-image: url('/Unity_logo.png');
   background-size: 20px;
   background-repeat: no-repeat;
   background-position: 16px center;

@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
     title: "Unity AI Voice Over",
     description: "A powerful Unity Editor plugin for seamless AI Voice Over integration.",
-    base: '/Unity-VoiceOver-Plugin/',
+    base: '/',
     themeConfig: {
         nav: [
             { text: 'Home', link: '/' },
