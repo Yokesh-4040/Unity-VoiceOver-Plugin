@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UnityDev.in - Automating Legacy Workflows</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8SC6ZEF7VE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-8SC6ZEF7VE');
+    </script>
+
+    <style>
+        :root {
+            /* Slate Black Theme Colors */
+            --bg-color: #0f1115;
+            --surface-color: rgba(255, 255, 255, 0.03);
+            --surface-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --accent-color: #61dafb;
+            --glow-color: rgba(255, 255, 255, 0.2);
+            --glow-strong: rgba(255, 255, 255, 0.5);
+            --btn-bg: rgba(255, 255, 255, 0.08);
+            --btn-hover: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Header Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            z-index: 50;
+            animation: fadeInDown 1s ease-out forwards;
+        }
+
+        .btn {
+            background: var(--btn-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--surface-border);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            background: var(--btn-hover);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.95);
+            color: #0f1115;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Ambient background glow */
+        .ambient-glow {
+            position: fixed;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.025) 0%, rgba(15, 17, 21, 0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            padding-top: 6rem;
+            z-index: 10;
+        }
+
+        .container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            animation: fadeIn 1.5s ease-out forwards;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .logo-container {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--glow-color);
+            filter: blur(40px);
+            border-radius: 50%;
+            z-index: -1;
+            animation: pulse-glow 4s ease-in-out infinite alternate;
+        }
+
+        .unity-logo {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px var(--glow-strong));
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease;
+        }
+
+        .logo-container:hover .unity-logo {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.9));
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0;
+            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .mission-card {
+            background: var(--surface-color);
+            border: 1px solid var(--surface-border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+            transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .mission-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .mission-card p {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+            font-weight: 400;
+        }
+
+        .mission-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight {
+            color: var(--text-primary);
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .accent {
+            color: #e2e8f0;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: #14171d;
+            border: 1px solid var(--surface-border);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            padding: 2.5rem;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .close-btn:hover {
+            color: white;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.25rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 1rem;
+            padding: 1rem;
+            font-size: 1.05rem;
+        }
+
+        .success-message {
+            display: none;
+            background: rgba(34, 197, 94, 0.1);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        @keyframes pulse-glow {
+            0% {
+                transform: scale(0.85);
+                opacity: 0.4;
+            }
+
+            100% {
+                transform: scale(1.15);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+                justify-content: center;
+            }
+
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            h1 {
+                font-size: 2.8rem;
+            }
+
+            .mission-card {
+                padding: 1.5rem;
+                margin-top: 0.5rem;
+            }
+
+            .mission-card p {
+                font-size: 1rem;
+            }
+
+            .logo-container {
+                width: 110px;
+                height: 110px;
+            }
+
+            .modal {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+    <!-- Preconnect to Google Fonts for Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="ambient-glow"></div>
+
+    <!-- Top Navigation -->
+    <header>
+        <a href="/voiceover/" class="btn">Voiceover Plugin Docs</a>
+        <button class="btn btn-primary" onclick="openModal()">Request a Tool</button>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="logo-container">
+                <img src="./Unity_logo.png" alt="Unity Logo" class="unity-logo">
+            </div>
+
+            <div class="text-content">
+                <h1>UnityDev.in</h1>
+
+                <div class="mission-card">
+                    <p>Hi, I am <span class="highlight">Yokesh J</span>, an Indian developer specializing in Unity
+                        development and optimization.</p>
+                    <p>Our team is on a mission to <span class="highlight accent">automate legacy workflows</span> and
+                        drastically reduce manual effort in Unity. We're building tools meant to empower developers to
+                        focus on what truly matters.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Request Tool Modal -->
+    <div class="modal-overlay" id="requestModal" onclick="closeModalOnOutsideClick(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Request a Tool</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+
+            <form id="requestForm">
+                <!-- Web3Forms Access Key -->
+                <input type="hidden" name="access_key" value="d12ee297-d7ed-42d2-a871-1d1537b42728">
+                <input type="hidden" name="subject" value="New Tool Request from UnityDev.in">
+
+                <div class="form-group">
+                    <label for="name">Name *</label>
+                    <input type="text" id="name" name="name" class="form-control" required placeholder="e.g. John Doe">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" class="form-control" required
+                        placeholder="you@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number (Optional)</label>
+                    <input type="tel" id="phone" name="phone" class="form-control" placeholder="+91 00000 00000">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Tool Idea / Description *</label>
+                    <textarea id="description" name="description" class="form-control" required
+                        placeholder="Describe the legacy workflow you want to automate..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary submit-btn">Submit Request</button>
+
+                <div id="successMessage" class="success-message">
+                    Thank you! Your request has been sent. We'll be in touch soon.
+                </div>
+
+                <div id="errorMessage" class="success-message"
+                    style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">
+                    Something went wrong. Please check your access key or try again later.
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal scripting -->
+    <script>
+        const modal = document.getElementById('requestModal');
+        const form = document.getElementById('requestForm');
+        const successMsg = document.getElementById('successMessage');
+        const errorMsg = document.getElementById('errorMessage');
+        const submitBtn = document.querySelector('.submit-btn');
+
+        function openModal() {
+            modal.classList.add('active');
+            // Reset state
+            form.reset();
+            form.style.display = 'block';
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+            submitBtn.style.display = 'block';
+            submitBtn.innerText = 'Submit Request';
+
+            Array.from(form.children).forEach(child => {
+                if (child.classList.contains('form-group')) {
+                    child.style.display = 'block';
+                }
+            });
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        function closeModalOnOutsideClick(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        }
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            submitBtn.innerText = 'Sending...';
+
+            const formData = new FormData(form);
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: json
+            })
+                .then(async (response) => {
+                    let json = await response.json();
+                    if (response.status == 200) {
+                        // Success
+                        submitBtn.style.display = 'none';
+                        // Hide inputs
+                        Array.from(form.children).forEach(child => {
+                            if (child.classList.contains('form-group')) {
+                                child.style.display = 'none';
+                            }
+                        });
+
+                        successMsg.style.display = 'block';
+                        errorMsg.style.display = 'none';
+                        form.reset();
+
+                        // Close modal automatically after 3 seconds
+                        setTimeout(() => {
+                            closeModal();
+                        }, 3000);
+                    } else {
+                        console.log(response);
+                        errorMsg.style.display = 'block';
+                        errorMsg.innerText = json.message || 'Something went wrong!';
+                        submitBtn.innerText = 'Submit Request';
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    errorMsg.style.display = 'block';
+                    errorMsg.innerText = 'Something went wrong!';
+                    submitBtn.innerText = 'Submit Request';
+                });
+        });
+    </script>
+</body>
+
+</html>
