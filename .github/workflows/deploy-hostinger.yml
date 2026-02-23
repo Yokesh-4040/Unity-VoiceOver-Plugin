@@ -32,11 +32,13 @@ jobs:
         working-directory: docs
         run: npm run build
 
-      - name: Sync files to Hostinger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Sync files to Hostinger via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /public_html/
-          local-dir: ./docs/.vitepress/dist/
+          port: 65002 # Hostinger usually uses port 65002 for SFTP. Change to 22 if that doesn't work!
+          local_path: './docs/.vitepress/dist/*'
+          remote_path: '/public_html/'
+          sftp_only: true
