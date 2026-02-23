@@ -3,11 +3,13 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
     title: "Unity AI Voice Over",
     description: "A powerful Unity Editor plugin for seamless AI Voice Over integration.",
-    base: '/',
+    base: '/voiceover/',
+    appearance: true,
     themeConfig: {
         nav: [
             { text: 'Home', link: '/' },
             { text: 'Guide', link: '/guide/getting-started' },
+            { text: 'GitHub', link: 'https://github.com/Yokesh-4040/Unity-VoiceOver-Plugin' }
         ],
         sidebar: [
             {
@@ -20,9 +22,7 @@ export default defineConfig({
                 ]
             }
         ],
-        socialLinks: [
-            { icon: 'github', link: 'https://github.com/Yokesh-4040/Unity-VoiceOver-Plugin' }
-        ],
+        socialLinks: [],
         footer: {
             message: 'Released under the MIT License.',
             copyright: 'Copyright © 2026-present Yokesh'

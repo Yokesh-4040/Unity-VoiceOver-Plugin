@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "Unity AI Voice Over"
   text: "Seamless Speech Synthesis"
-  tagline: "Integrate high-quality AI speech from providers like Voiceover and Sarvam AI directly into your Unity workflow."
+  tagline: "Integrate high-quality AI speech from providers like Voiceover and Sarvam AI directly into your Unity workflow.<br><br><img src='https://img.shields.io/github/downloads/Yokesh-4040/Unity-VoiceOver-Plugin/total?style=for-the-badge&color=blue&logo=github' alt='Total Downloads' />"
   actions:
     - theme: brand
       text: Get Started
@@ -24,7 +24,7 @@ features:
 
 <style>
 .VPButton.alt[href$="unitypackage"] {
-  background-image: url('/Unity_logo.png');
+  background-image: url('/voiceover/Unity_logo.png');
   background-size: 20px;
   background-repeat: no-repeat;
   background-position: 16px center;

@@ -38,7 +38,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /
+          server-dir: /voiceover/
           local-dir: ./docs/.vitepress/dist/
           security: loose
           log-level: verbose
